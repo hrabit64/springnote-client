@@ -1,0 +1,9 @@
+User-agent: * 
+Disallow: /write/
+Disallow: /admin/
+Disallow: /upload-image/
+Disallow: /edit/
+Disallow: /management/
+Disallow: /juser-hwang/
+Disallow: /projects/
+Disallow: /register/
