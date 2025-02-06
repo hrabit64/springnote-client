@@ -15,7 +15,6 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'nuxt-vuefire',
     'vuetify-nuxt-module',
-    '@nuxtjs/mdc',
     '@vueuse/nuxt',
     '@vueuse/motion/nuxt'
   ],
@@ -59,6 +58,7 @@ export default defineNuxtConfig({
       )
     }
   },
+
   components: true,
   plugins: [
     { src: '~/plugins/analytics.client', mode: 'client' },
@@ -75,8 +75,7 @@ export default defineNuxtConfig({
 
   css: [
     '@/assets/css/fonts.css',
-    '@/assets/css/global.css',
-    'highlight.js/styles/stackoverflow-dark.css'
+    '@/assets/css/global.css'
   ],
 
   pinia: {
@@ -127,101 +126,11 @@ export default defineNuxtConfig({
     }
   },
 
-  mdc: {
-    highlight: {
-      langs: [
-        'c#',
-        'md',
-        'diff',
-        'java',
-        'js',
-        'mermaid',
-        'go',
-        'python',
-        'shell',
-        'sql',
-        'yaml',
-        'json',
-        'xml',
-        'html',
-        'css',
-        'php',
-        'ruby',
-        'rust',
-        'typescript',
-        'dart',
-        'kotlin',
-        'swift',
-        'scala',
-        'groovy',
-        'perl',
-        'lua',
-        'r',
-        'haskell',
-        'clojure',
-        'elixir',
-        'lisp',
-        'scheme',
-        'ocaml',
-        'fsharp'
-      ],
-      theme: 'material-theme-darker'
-    },
-    components: {
-      prose: true,
-      map: {
-        // p: 'MarkdownP',
-        h1: 'MarkdownH1',
-        h2: 'MarkdownH2',
-        h3: 'MarkdownH3',
-        h4: 'MarkdownH4',
-        h5: 'MarkdownH5',
-        h6: 'MarkdownH6',
-        ul: 'MarkdownUl',
-        // ol: 'MarkdownOl',
-        // li: 'MarkdownLi',
-        blockquote: 'MarkdownBlockquote',
-        hr: 'MarkdownHr',
-        pre: 'MarkdownPre',
-        code: 'MarkdownCode',
-        table: 'MarkdownTable',
-        thead: 'MarkdownThead',
-        tbody: 'MarkdownTbody',
-        tr: 'MarkdownTr',
-        th: 'MarkdownTh',
-        td: 'MarkdownTd',
-        a: 'MarkdownA',
-        img: 'MarkdownImg',
-        em: 'MarkdownEm',
-        strong: 'MarkdownStrong'
-      }
-    }
-  },
-
   runtimeConfig: {
     public: {
       siteKey: process.env.RECAPTCHA_SITE_KEY,
       baseUrl: process.env.BASE_URL || 'http://localhost:3000',
       baseImgUrl: process.env.BASE_IMG_URL || 'http://localhost:3000',
-      motion: {
-        directives: {
-          shake: {
-            initial: {
-              y: 0,
-              x: 0
-            },
-            enter: {
-              y: 8,
-              x: 8,
-              transition: {
-                duration: 1000,
-                repeat: Infinity,
-                repeatType: 'reverse'
-              }
-            }
-          }
-        }
-      }
     }
   }
 })

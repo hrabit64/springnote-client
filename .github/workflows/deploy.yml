@@ -62,5 +62,5 @@ jobs:
             tar -xzvf client.tar.gz  
             rm -rf client.tar.gz
             docker build -t springnote-client .  
-            docker compose up -d 
+            docker compose -f docker-compose.prod.yml up -d
             
