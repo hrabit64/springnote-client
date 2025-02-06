@@ -3,6 +3,13 @@ import { md3 } from 'vuetify/blueprints'
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-19',
   devtools: { enabled: false },
+  routeRules: {
+    '/': { swr: true },
+    '/posts/:id': { swr: true },
+    '/post-list': { swr: true },
+    '/series-list': { swr: true },
+    '/series/:id': { swr: true },
+  },
   modules: [
     '@vueuse/motion/nuxt',
     '@pinia/nuxt',

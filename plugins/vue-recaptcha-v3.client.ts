@@ -1,10 +1,6 @@
 import { defineNuxtPlugin } from '#app'
 import { VueReCaptcha } from 'vue-recaptcha-v3'
 
-// import dotenv from 'dotenv'
-
-// // .env 파일 로드
-// dotenv.config()
 
 export default defineNuxtPlugin(nuxtApp => {
   const config = useRuntimeConfig()
