@@ -16,13 +16,14 @@
         :value="item"
         color="primary"
         :active="router.currentRoute.value.path === item.link"
+        @click.stop="goTo(item.link)"
       >
         <template v-slot:prepend>
           <v-icon :icon="item.icon"></v-icon>
         </template>
         <v-list-item-title
           v-text="item.title"
-          @click.stop="goTo(item.link)"
+
         ></v-list-item-title>
       </v-list-item>
 
@@ -32,13 +33,14 @@
         :key="i"
         :value="item"
         color="primary"
+        @click.stop="goTo(item.link)"
       >
         <template v-slot:prepend>
           <v-icon :icon="item.icon"></v-icon>
         </template>
         <v-list-item-title
           v-text="item.title"
-          @click.stop="goTo(item.link)"
+
         ></v-list-item-title>
       </v-list-item>
     </v-list>

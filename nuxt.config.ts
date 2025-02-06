@@ -18,7 +18,9 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@vueuse/motion/nuxt'
   ],
-
+  nitro: {
+    compressPublicAssets: true,
+  },
   vite: {
     define: {
       'process.env.DEBUG': false

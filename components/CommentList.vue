@@ -132,7 +132,7 @@ const calListHeight = () => {
   if (mobile.value) {
     return name.value === '' ? '65vh' : '50vh'
   }
-  return name.value === '' ? '74vh' : '68vh'
+  return name.value === '' ? '74vh' : '65vh'
 }
 const commentList = reactive({
   height: calListHeight()
