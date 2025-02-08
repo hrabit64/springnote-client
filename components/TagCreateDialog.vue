@@ -23,7 +23,7 @@
               v-model="tagName"
               :rules="[rules.title_required, rules.title_min, rules.title_max]"
               variant="outlined"
-              class="d2coding jetbrains-mono-regular"
+              class="regular-font"
               hint="3 ~ 100자"
             >
               <template v-slot:prepend>

@@ -16,8 +16,10 @@ export default defineNuxtConfig({
     'nuxt-vuefire',
     'vuetify-nuxt-module',
     '@vueuse/nuxt',
-    '@vueuse/motion/nuxt'
+    '@vueuse/motion/nuxt',
+    '@nuxt/image'
   ],
+
   nitro: {
     compressPublicAssets: true,
   },
@@ -64,20 +66,28 @@ export default defineNuxtConfig({
   components: true,
   plugins: [
     { src: '~/plugins/analytics.client', mode: 'client' },
-    { src: '~/plugins/vue-recaptcha-v3.client', mode: 'client' }
+    { src: '~/plugins/vue-recaptcha-v3.client', mode: 'client' },
+    '~/plugins/ssr-client-hints',
   ],
 
   app: {
     head: {
-      title: 'springnote.blog'
+      title: 'springnote.blog',
+      link: [
+        // preconnect 설정
+        { rel: 'preconnect', href: 'https://www.google.com' },
+        { rel: 'preconnect', href: 'https://firebase.googleapis.com' },
+        // dns-prefetch 설정
+        { rel: 'dns-prefetch', href: 'https://www.google.com' },
+        { rel: 'dns-prefetch', href: 'https://firebase.googleapis.com' }
+      ]
     }
   },
 
   ssr: true,
 
   css: [
-    '@/assets/css/fonts.css',
-    '@/assets/css/global.css'
+    '@/assets/css/fonts.css'
   ],
 
   pinia: {
@@ -100,14 +110,24 @@ export default defineNuxtConfig({
   features: {
     inlineStyles: false
   },
+
   vuetify: {
-    ssr: true,
-    defaultAssets: { font: false, icons: true },
+    moduleOptions: {
+      ssrClientHints: {
+        viewportSize: true,         // 클라이언트 뷰포트 정보를 SSR에 전달
+        prefersColorScheme: true,   // 색상 테마 정보 전달 (옵션)
+        prefersReducedMotion: true, // 모션 선호도 정보 전달 (옵션)
+        reloadOnFirstRequest: false // 첫 요청 후 리로드하지 않음 (필요 시 설정)
+      }
+    },
+
+
+    defaultAssets: { font: false },
     treeShake: true,
-    moduleOptions: {},
+
     vuetifyOptions: {
-      defaultAssets: { font: false, icons: true },
       blueprint: md3,
+      defaultAssets: { font: false },
       theme: {
         defaultTheme: 'darkSpringTheme',
         themes: {
@@ -123,6 +143,26 @@ export default defineNuxtConfig({
               success: '#121212'
             }
           }
+        }
+      }
+    }
+  },
+
+  image: {
+    inject: true,
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536
+    },
+    presets: {
+      default: {
+        modifiers: {
+          format: 'webp',
+          quality: 80
         }
       }
     }

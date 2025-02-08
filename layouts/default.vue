@@ -1,9 +1,7 @@
 <template>
   <v-app class="main-font bg-success">
     <MainAppBar />
-    <client-only>
-      <SideBar />
-    </client-only>
+    <SideBar />
     <v-main>
       <client-only>
         <LoginManager />

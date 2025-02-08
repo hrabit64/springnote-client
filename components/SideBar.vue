@@ -1,5 +1,6 @@
 <template>
   <v-navigation-drawer
+    :transition="false"
     class="text-left no-transition mr-2"
     border="false"
     :permanent="!mobile"
@@ -7,6 +8,8 @@
     color="success"
     v-model="open"
     temporary
+    app
+    disable-resize-watcher
   >
     <v-list weight="100%">
       <v-list-subheader>FOLDERS</v-list-subheader>
@@ -93,5 +96,16 @@ watch(mobile, () => {
   position: -webkit-sticky; /* for Safari */
   top: 6em;
   z-index: 2;
+}
+
+.v-navbar {
+  transition: none !important;
+}
+
+.v-fade-transition-enter-active,
+.v-fade-transition-leave-active,
+.v-fade-transition-enter-to,
+.v-fade-transition-leave-to {
+  transition: none !important;
 }
 </style>

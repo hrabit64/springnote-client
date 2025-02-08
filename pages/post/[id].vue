@@ -151,6 +151,17 @@ const { mobile } = useDisplay()
 const goTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
+
+useHead({
+  link: [
+    {
+      rel: "preload",
+      href: post.thumbnail + "?height=600",
+      as: "image",
+      type: "image/webp"
+    }
+  ]
+});
 </script>
 
 <style scoped></style>

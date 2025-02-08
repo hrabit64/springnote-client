@@ -1,18 +1,22 @@
 <template>
   <v-app class="main-font bg-success">
+    <MainAppBar />
+    <SideBar />
+
     <client-only>
-      <MainAppBar />
-      <SideBar />
       <ReplySidebar />
       <CommentSidebar />
     </client-only>
-    <v-main>
-      <client-only>
-        <LoginManager />
-      </client-only>
 
+    <client-only>
+      <LoginManager />
+    </client-only>
+
+    <v-main>
       <slot></slot>
     </v-main>
+
+
     <client-only>
       <v-fab
         color="primary"
@@ -77,13 +81,5 @@ const goTop = () => {
   background: #555;
 }
 
-.no-transition {
-  transition: none !important;
-}
-
-.wrap-text {
-  white-space: normal !important;
-  word-wrap: break-word !important;
-}
 </style>
 <style scoped></style>

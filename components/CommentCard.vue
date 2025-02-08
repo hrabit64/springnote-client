@@ -8,22 +8,22 @@
       </v-avatar>
       <span
         v-if="isMyComment"
-        class="text-subtitle-2 jetbrains-mono-bold d2coding text-grey-darken-2 d-inline mx-2"
+        class="text-subtitle-2 bold-font text-grey-darken-2 d-inline mx-2"
         >(나)
       </span>
       <p
-        class="text-subtitle-1 jetbrains-mono-bold d2coding text-primary d-inline"
+        class="text-subtitle-1 bold-font text-primary d-inline"
       >
         <v-chip
           v-if="comment.writer.admin"
-          class="jetbrains-mono-bold d2coding"
+          class="bold-font"
           variant="outlined"
           >관리자</v-chip
         >
         {{ comment.writer.name }}
       </p>
       <span
-        class="text-subtitle-2 jetbrains-mono-bold d2coding text-grey-darken-2 d-inline ml-2"
+        class="text-subtitle-2 bold-font text-grey-darken-2 d-inline ml-2"
         ># {{ comment.id }}</span
       >
 
@@ -51,7 +51,7 @@
       </p>
 
       <p
-        class="text-subtitle-2 jetbrains-mono-bold d2coding text-grey-darken-1 my-2"
+        class="text-subtitle-2 bold-font text-grey-darken-1 my-2"
       >
         {{ comment.created_date.replace('T', ' ').replace('Z', '') }}
       </p>
@@ -60,14 +60,14 @@
     <!--    삭제 전 확인-->
     <v-card-text v-if="isDelete">
       <v-alert
-        class="d2coding jetbrains-mono-bold"
+        class="bold-font"
         icon="mdi-alert"
         type="warning"
       >
         <v-alert-title>
-          <p class="d2coding jetbrains-mono-bold">정말로 삭제하시겠습니까?</p>
+          <p class="bold-font">정말로 삭제하시겠습니까?</p>
         </v-alert-title>
-        <p class="d2coding jetbrains-mono-bold">
+        <p class="bold-font">
           삭제된 댓글은 복구가 불가능합니다. 그래도 삭제하시겠습니까?
         </p>
         <v-btn variant="text" @click.stop="rm">
@@ -84,12 +84,12 @@
 
     <!--    본문-->
     <v-card-text v-if="!isLoading && comment.enabled">
-      <p class="d2coding jetbrains-mono-bold">
+      <p class="bold-font">
         {{ comment.content }}
       </p>
     </v-card-text>
     <v-card-text v-if="!isLoading && !comment.enabled">
-      <p class="d2coding jetbrains-mono-italic">
+      <p class="italic-font">
         {{ comment.content }}
       </p>
     </v-card-text>
@@ -116,7 +116,7 @@
 
     <!--    대댓글-->
     <v-card-text v-if="!isLoading && !no_reply" @click.stop="openReply">
-      <p class="d2coding jetbrains-mono-bold">
+      <p class="bold-font">
         <v-icon>mdi-comment-text-multiple</v-icon> {{ comment.reply_count }}
       </p>
     </v-card-text>

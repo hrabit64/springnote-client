@@ -54,7 +54,7 @@
       <tbody>
         <tr v-for="tag in tagList" :key="tag.id">
           <td class="py-2">
-            <v-row class="d2Coding jetbrains-mono-bold text-body-2">
+            <v-row class="bold-font text-body-2">
               <v-col
                 cols="10"
                 v-if="editTagId !== tag.id"
@@ -66,7 +66,7 @@
                 <v-text-field
                   clearable
                   variant="outlined"
-                  class="d2coding jetbrains-mono-regular"
+                  class="regular-font"
                   hint="최대 100자"
                   counter="100"
                   label="태그 수정"

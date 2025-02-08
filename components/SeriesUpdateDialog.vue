@@ -25,7 +25,7 @@
               v-model="seriesName"
               :rules="[rules.title_required, rules.title_min, rules.title_max]"
               variant="outlined"
-              class="d2coding jetbrains-mono-regular"
+              class="regular-font"
               hint="3 ~ 100자"
             >
               <template v-slot:prepend>
@@ -41,7 +41,7 @@
               v-model="seriesDescription"
               :rules="[rules.description_max]"
               variant="outlined"
-              class="d2coding jetbrains-mono-regular"
+              class="regular-font"
               hint="최대 500자"
             >
               <template v-slot:prepend>
@@ -57,7 +57,7 @@
               label="썸네일"
               readonly
               prepend-icon="mdi-image"
-              class="d2coding jetbrains-mono-regular"
+              class="regular-font "
             />
             <v-img
               v-if="thumbnail"

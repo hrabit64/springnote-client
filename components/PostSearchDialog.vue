@@ -25,7 +25,7 @@
                 v-model="searchKeyword"
                 :rules="[rules.required, rules.min, rules.max]"
                 variant="outlined"
-                class="d2coding jetbrains-mono-regular"
+                class="regular-font"
                 hint="2 ~ 20자"
               >
                 <template v-slot:prepend>
@@ -41,13 +41,13 @@
             <v-col
               v-if="isLoading"
               cols="12"
-              class="text-center d2coding jetbrains-mono-bold"
+              class="text-center bold-font"
             >
               <LinearProgress text="검색중" />
             </v-col>
             <v-col
               cols="12"
-              class="text-center d2coding jetbrains-mono-bold mt-5"
+              class="text-center bold-font mt-5"
               v-if="searchedPost.length === 0 && !isLoading"
             >
               <v-icon>mdi-duck</v-icon>
@@ -66,11 +66,11 @@
           <template v-slot:default="{ item }">
             <v-list-item class="my-1 mx-2" hover @click="goToPost(item.id)">
               <span
-                class="text-subtitle-2 jetbrains-mono-regular d2coding text-primary"
+                class="text-subtitle-2 regular-font text-primary"
               >
                 시리즈 | {{ item.series?.name || '시리즈 없음' }}</span
               >
-              <p class="text-body-2 jetbrains-mono-regular d2coding">
+              <p class="text-body-2 regular-font">
                 {{ item.title }}
               </p>
             </v-list-item>

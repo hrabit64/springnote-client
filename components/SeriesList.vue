@@ -17,7 +17,7 @@
         <tbody>
           <tr v-for="series in seriesList" :key="series.id">
             <td @click.stop="goToSeries(series.id)" class="py-2">
-              <v-row class="d2Coding jetbrains-mono-bold text-body-2">
+              <v-row class="bold-font text-body-2">
                 <v-col cols="1" class="text-right">
                   <v-icon>mdi-folder</v-icon></v-col
                 >

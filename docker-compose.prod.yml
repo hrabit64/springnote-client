@@ -6,6 +6,8 @@ services:
     container_name: springnote-client
     networks:
       - springnote_net
+    restart: always
+
 networks:
   springnote_net:
     external: true

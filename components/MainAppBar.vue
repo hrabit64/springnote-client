@@ -112,6 +112,29 @@ const login = async () => {
     console.error('Failed signinRedirect', reason)
   })
 }
+
+useHead({
+  link: [
+    {
+      rel: "preload",
+      href: "/images/logo.webp",
+      as: "image",
+      type: "image/webp"
+    }
+  ]
+});
+
 </script>
 
-<style scoped></style>
+<style scoped>
+.v-app-bar {
+  transition: none !important;
+}
+
+.v-fade-transition-enter-active,
+.v-fade-transition-leave-active,
+.v-fade-transition-enter-to,
+.v-fade-transition-leave-to {
+  transition: none !important;
+}
+</style>

@@ -3,6 +3,8 @@
 </template>
 
 <script lang="ts" setup>
+import { onMounted } from 'vue'
+
 const props = defineProps<{
   content: string
 }>()
@@ -29,6 +31,34 @@ const md = new MarkdownIt({
   .use(MarkdownItSub)
   .use(MarkdownItSup)
   .use(MarkdownItTasklists)
+
+
+
+const defaultRender = md.renderer.rules.image || function (tokens, idx, options, env, self) {
+  return self.renderToken(tokens, idx, options);
+};
+
+
+md.renderer.rules.image = function (tokens, idx, options, env, self) {
+  const token = tokens[idx];
+  const srcIndex = token.attrIndex('src');
+  const src = token.attrs?.[srcIndex]?.[1];
+
+  const widthIndex = token.attrIndex('width');
+  const heightIndex = token.attrIndex('height');
+
+  if (widthIndex < 0) token.attrPush(['width', '720']);
+  if (heightIndex < 0) token.attrPush(['height', 'auto']);
+
+  token.attrPush(['rel','preload']);
+
+  return defaultRender(tokens, idx, options, env, self);
+};
+
+
+
+
+
 </script>
 
 <style>
@@ -153,6 +183,8 @@ const md = new MarkdownIt({
   margin: auto;
   display: block;
 }
+
+
 
 #markdown-wrapper code,
 #markdown-wrapper kbd,
