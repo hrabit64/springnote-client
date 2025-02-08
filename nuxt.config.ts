@@ -66,7 +66,7 @@ export default defineNuxtConfig({
   components: true,
   plugins: [
     { src: '~/plugins/analytics.client', mode: 'client' },
-    { src: '~/plugins/vue-recaptcha-v3.client', mode: 'client' },
+    // { src: '~/plugins/vue-recaptcha-v3.client', mode: 'client' },
     '~/plugins/ssr-client-hints',
   ],
 

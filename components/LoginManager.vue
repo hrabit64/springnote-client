@@ -32,13 +32,15 @@
       </v-row>
     </v-card>
   </v-dialog>
+
+  <RecaptchaManager ref="recaptcha" />
 </template>
 <script setup lang="ts">
 import { getSelf, register } from '~/api/auth.api'
 import { Auth, getRedirectResult, signOut } from 'firebase/auth'
 import { isUserResponse } from '~/types/user-response.d'
 import { useUserStore } from '~/stores/user'
-import { useReCaptcha } from 'vue-recaptcha-v3'
+
 
 const isLoading = ref(localStorage.getItem('login-in-progress') === 'true')
 
@@ -51,14 +53,7 @@ watch(isLoginInprogress, value => {
 })
 
 const router = useRouter()
-const recaptchaInstance = useReCaptcha()
-const recaptcha = async () => {
-  // optional you can await for the reCaptcha load
-  await recaptchaInstance?.recaptchaLoaded()
 
-  // get the token, a custom action could be added as argument to the method
-  return recaptchaInstance?.executeRecaptcha('register')
-}
 
 const disableDialog = () => {
   isLoading.value = false
@@ -69,11 +64,14 @@ import { useAlertStore } from '~/stores/alert'
 const alertStore = useAlertStore()
 
 import { AlertType } from '~/types/components.d'
+
+const RecaptchaManager = defineAsyncComponent(() => import('@/components/RecaptchaManager.vue'))
+const recaptcha = ref<InstanceType<typeof RecaptchaManager> | null>(null)
+
 const addUser = async () => {
-  const token = await recaptcha()
+  const token = await recaptcha.value.recaptcha('register')
 
   if (!token) {
-    //TODO raise error
     await signOut(auth)
     console.error('Failed to get recaptcha token')
     alertStore.setMessage({
@@ -105,7 +103,10 @@ const addUser = async () => {
         })
       }
     } else {
-      // TODO raise error
+      alertStore.setMessage({
+        message: '회원 가입에 실패했습니다. 잠시후에 다시 시도해주세요.',
+        type: AlertType.Error
+      })
       await signOut(auth)
     }
   }

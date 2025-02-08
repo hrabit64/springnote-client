@@ -27,10 +27,10 @@
       <v-progress-circular color="primary" indeterminate></v-progress-circular>
     </v-col>
   </v-row>
+
+  <RecaptchaManager ref="recaptcha" />
 </template>
 <script setup lang="ts">
-import { useReCaptcha } from 'vue-recaptcha-v3'
-
 import { useCommentSidebarStore } from '~/stores/comment-sidebar'
 const commentSidebarStore = useCommentSidebarStore()
 
@@ -52,14 +52,9 @@ const rules = reactive({
 })
 
 const content = ref('')
-const recaptchaInstance = useReCaptcha()
-const recaptcha = async () => {
-  // optional you can await for the reCaptcha load
-  await recaptchaInstance?.recaptchaLoaded()
 
-  // get the token, a custom action could be added as argument to the method
-  return recaptchaInstance?.executeRecaptcha('post_create')
-}
+const RecaptchaManager = defineAsyncComponent(() => import('@/components/RecaptchaManager.vue'))
+const recaptcha = ref<InstanceType<typeof RecaptchaManager> | null>(null)
 
 import { createComment } from '~/api/comment.api'
 
@@ -70,6 +65,7 @@ const alertStore = useAlertStore()
 
 import { AlertType } from '~/types/components.d'
 import { IsCommentResponse } from '~/types/comment-response.d'
+
 const create = async () => {
   if (isLoading.value) {
     return
@@ -80,7 +76,7 @@ const create = async () => {
     console.log('bot detected')
     alertStore.setMessage({
       message: '봇이 감지되었습니다.',
-      type: AlertType.ERROR
+      type: AlertType.Error
     })
     isLoading.value = false
     return
@@ -90,7 +86,7 @@ const create = async () => {
     console.log('empty content')
     alertStore.setMessage({
       message: '내용을 입력해주세요.',
-      type: AlertType.ERROR
+      type: AlertType.Error
     })
     isLoading.value = false
     return
@@ -100,7 +96,7 @@ const create = async () => {
     console.log('content too short')
     alertStore.setMessage({
       message: '3자 이상 입력해주세요.',
-      type: AlertType.ERROR
+      type: AlertType.Error
     })
     isLoading.value = false
     return
@@ -110,7 +106,7 @@ const create = async () => {
     console.log('content too long')
     alertStore.setMessage({
       message: '최대 1000자 까지 가능합니다.',
-      type: AlertType.ERROR
+      type: AlertType.Error
     })
     isLoading.value = false
     return
@@ -118,13 +114,27 @@ const create = async () => {
 
   console.log('create comment')
 
-  const token = await recaptcha()
+  let token = ''
+
+  if (recaptcha.value) {
+   token = await recaptcha.value.recaptcha('comment_create')
+  } else {
+    console.log('recaptcha manager failed')
+    alertStore.setMessage({
+      message: 'reCAPTCHA 인증에 실패했습니다. 다시 시도해주세요.',
+      type: AlertType.Error
+    })
+    isLoading.value = false
+    return
+  }
+
+
 
   if (!token) {
     console.log('recaptcha failed')
     alertStore.setMessage({
       message: 'reCAPTCHA 인증에 실패했습니다. 다시 시도해주세요.',
-      type: AlertType.ERROR
+      type: AlertType.Error
     })
     isLoading.value = false
     return
@@ -147,7 +157,7 @@ const create = async () => {
     console.log('response is not comment response')
     alertStore.setMessage({
       message: '댓글 생성에 실패했습니다. 다시 시도해주세요.',
-      type: AlertType.ERROR
+      type: AlertType.Error
     })
     isLoading.value = false
     return

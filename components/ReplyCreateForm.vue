@@ -27,13 +27,15 @@
       <v-progress-circular color="primary" indeterminate></v-progress-circular>
     </v-col>
   </v-row>
+
+  <RecaptchaManager ref="recaptcha" />
 </template>
 <script setup lang="ts">
 import { useCommentSidebarStore } from '~/stores/comment-sidebar'
 const commentSidebarStore = useCommentSidebarStore()
 const { parentComment, targetPostId } = storeToRefs(commentSidebarStore)
 
-import { useReCaptcha } from 'vue-recaptcha-v3'
+
 
 const emits = defineEmits(['create'])
 import type { CommentCreateRequest } from '~/types/comment-request'
@@ -54,15 +56,6 @@ const rules = reactive({
 
 const content = ref('')
 
-const recaptchaInstance = useReCaptcha()
-
-const recaptcha = async () => {
-  // optional you can await for the reCaptcha load
-  await recaptchaInstance?.recaptchaLoaded()
-
-  // get the token, a custom action could be added as argument to the method
-  return recaptchaInstance?.executeRecaptcha('post_create')
-}
 
 import { createReply } from '~/api/comment.api'
 
@@ -74,7 +67,8 @@ const alertStore = useAlertStore()
 
 import { AlertType } from '~/types/components.d'
 import { IsCommentResponse } from '~/types/comment-response.d'
-
+const RecaptchaManager = defineAsyncComponent(() => import('@/components/RecaptchaManager.vue'))
+const recaptcha = ref<InstanceType<typeof RecaptchaManager> | null>(null)
 const create = async () => {
   if (isLoading.value) {
     return
@@ -123,7 +117,8 @@ const create = async () => {
 
   console.log('create comment')
 
-  const token = await recaptcha()
+  const token = await recaptcha.value.recaptcha('reply_create')
+
 
   if (!token) {
     console.log('recaptcha failed')

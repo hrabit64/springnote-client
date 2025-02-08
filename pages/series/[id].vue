@@ -34,9 +34,7 @@ const series = await getSeriesWithId(Number(id)).then(res => {
   }
 })
 
-import { usePageTitleStore } from '~/stores/page-title'
-const pageTitleStore = usePageTitleStore()
-pageTitleStore.setTitle(series.name)
+
 </script>
 
 <style scoped></style>

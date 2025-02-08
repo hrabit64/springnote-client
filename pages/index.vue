@@ -99,42 +99,6 @@
                 </v-card-actions>
               </v-card>
             </v-col>
-
-            <!-- <v-col cols="12">
-              <v-card
-                color="primary"
-                variant="outlined"
-                class="pa-5"
-                width="100%"
-              >
-                <p
-                  class="text-h5 bold-font mb-5 wrap-text text-white text-center"
-                >
-                  <v-icon>mdi-history</v-icon>최신 포스트
-                </p>
-                <client-only>
-                  <v-window
-                    v-model="window"
-                    :show-arrows="!mobile"
-                    touch
-                    style="height: 40vh"
-                  >
-                    <v-window-item
-                      v-for="(post, index) in recentPosts"
-                      :key="index"
-                    >
-                      <PostCard :post="post"> </PostCard>
-                    </v-window-item>
-                  </v-window>
-                  <p
-                    class="text-h5 bold-font wrap-text text-center"
-                    v-if="mobile"
-                  >
-                    <v-icon>mdi-arrow-left-right</v-icon>
-                  </p>
-                </client-only>
-              </v-card>
-            </v-col> -->
           </v-row>
         </WindowCard>
       </v-col>
@@ -176,20 +140,6 @@ const goTo = (path: string) => {
   router.push(`${path}`)
 }
 
-// import type { PostSimpleResponse } from '~/types/post-response'
-// import { getRecentPosts } from '~/api/post.api'
-// import { isPagePostSimpleResponse } from '~/types/post-response.d'
-// const recentPosts = ref<PostSimpleResponse[]>([])
-
-// onMounted(async () => {
-//   getRecentPosts(5).then(result => {
-//     if (isPagePostSimpleResponse(result)) {
-//       recentPosts.value = result._embedded.posts
-//     }
-//   })
-// })
-
-const window = ref(0)
 import { useDisplay } from 'vuetify'
 const { mobile } = useDisplay()
 </script>

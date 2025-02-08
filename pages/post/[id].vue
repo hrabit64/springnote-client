@@ -114,7 +114,7 @@ const route = useRoute()
 const postId = route.params.id
 commentSidebarStore.setTargetPostId(Number(postId))
 
-const pageTitleStore = usePageTitleStore()
+
 
 const post: PostDetailResponse = await getPost(Number(postId)).then(res => {
   if (isPostDetailResponse(res)) {
@@ -132,7 +132,6 @@ const tags = computed(() => {
   return post.tags.map(tag => tag.name)
 })
 
-const comments = ref(null)
 
 const router = useRouter()
 const goToSeries = (seriesId: number) => {

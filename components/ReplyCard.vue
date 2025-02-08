@@ -127,6 +127,8 @@
       >I'm Not Bot</v-checkbox
     >
   </v-card>
+
+  <RecaptchaManager ref="recaptcha" />
 </template>
 <script setup lang="ts">
 import type { ReplyResponse } from '~/types/comment-response'
@@ -164,15 +166,13 @@ const rules = reactive({
 })
 
 import { updateComment } from '~/api/comment.api'
-const recaptchaInstance = useReCaptcha()
-const recaptcha = async () => {
-  await recaptchaInstance?.recaptchaLoaded()
-  return recaptchaInstance?.executeRecaptcha('comment_update')
-}
+const RecaptchaManager = defineAsyncComponent(() => import('@/components/RecaptchaManager.vue'))
+const recaptcha = ref<InstanceType<typeof RecaptchaManager> | null>(null)
+
 const update = async () => {
   closeEdit()
   isLoading.value = true
-  const token = await recaptcha()
+  const token = await recaptcha.value.recaptcha('reply_update')
 
   if (!token) {
     isLoading.value = false
@@ -202,7 +202,7 @@ const closeDelete = () => {
 }
 
 import { deleteComment } from '~/api/comment.api'
-import { useReCaptcha } from 'vue-recaptcha-v3'
+
 
 const rm = async () => {
   closeEdit()

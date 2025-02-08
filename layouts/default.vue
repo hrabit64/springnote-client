@@ -2,10 +2,11 @@
   <v-app class="main-font bg-success">
     <MainAppBar />
     <SideBar />
+    <client-only>
+      <LoginManager />
+    </client-only>
     <v-main>
-      <client-only>
-        <LoginManager />
-      </client-only>
+
       <slot></slot>
     </v-main>
   </v-app>
