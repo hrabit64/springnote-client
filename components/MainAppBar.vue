@@ -1,11 +1,11 @@
 <template>
-  <v-app-bar :elevation="0" color="success" fixed style="width: 100%">
+  <v-app-bar :elevation="0" color="success" fixed height="64" sticky app>
     <client-only>
-      <v-btn small icon v-if="mobile" @click.stop="sidebarStore.toggle">
+      <v-btn small icon v-show="mobile" @click.stop="sidebarStore.toggle">
         <v-icon color="primary">mdi-dots-vertical</v-icon>
       </v-btn>
     </client-only>
-    <v-app-bar-title class="mr-1">
+    <v-app-bar-title class="mr-1" @click.stop="goHome" style="cursor: pointer">
       <v-icon>
         <v-img
           class="mr-1"
@@ -14,10 +14,11 @@
           max-width="32"
           aspect-ratio="1/1"
           alt="logo"
+          :transition="false"
         ></v-img>
       </v-icon>
       <span class="ml-1 text-primary font-weight-bold" v-show="!mobile"
-        >springnote.blog</span
+      >springnote.blog</span
       >
     </v-app-bar-title>
 
@@ -30,20 +31,20 @@
         small
         icon
         class="ml-1 mr-2"
-        v-if="isAdmin && isLogin"
+        v-show="isAdmin && isLogin"
         @click.stop="goAdminPage"
       >
-        <v-icon color="primary">mdi-shield-crown</v-icon>
-        <v-tooltip activator="parent" location="bottom"> AdminPage </v-tooltip>
+        <v-icon color="primary">mdi-account-tie</v-icon>
+        <v-tooltip activator="parent" location="bottom">AdminPage</v-tooltip>
       </v-btn>
-      <v-btn small icon class="ml-1 mr-2" v-if="!isLogin" @click.stop="login">
+      <v-btn small icon class="ml-1 mr-2" v-show="!isLogin" @click.stop="login">
         <v-icon color="primary">mdi-lock</v-icon>
-        <v-tooltip activator="parent" location="bottom"> Login </v-tooltip>
+        <v-tooltip activator="parent" location="bottom">Login</v-tooltip>
       </v-btn>
 
-      <v-btn small icon class="ml-1 mr-2" @click.stop="logout" v-if="isLogin">
+      <v-btn small icon class="ml-1 mr-2" @click.stop="logout" v-show="isLogin">
         <v-icon color="primary">mdi-logout</v-icon>
-        <v-tooltip activator="parent" location="bottom"> Logout </v-tooltip>
+        <v-tooltip activator="parent" location="bottom">Logout</v-tooltip>
       </v-btn>
     </client-only>
   </v-app-bar>
@@ -52,10 +53,16 @@
 <script setup lang="ts">
 import { useUserStore } from '~/stores/user'
 import { storeToRefs } from 'pinia'
+import { useDisplay } from 'vuetify'
+import { GoogleAuthProvider, signInWithRedirect, signOut } from 'firebase/auth'
+import { useAlertStore } from '~/stores/alert'
+import { AlertType } from '~/types/components.d'
+import { useSidebarStore } from '~/stores/sidebar'
+import { useFirebaseAuth } from 'vuefire'
+
 const userStore = useUserStore()
 const { isLogin, profileImg, isAdmin } = storeToRefs(userStore)
 
-import { useDisplay } from 'vuetify'
 const { mobile } = useDisplay()
 
 const router = useRouter()
@@ -63,13 +70,14 @@ const goAdminPage = () => {
   router.push('/admin')
 }
 
+const goHome = () => {
+  router.push('/')
+}
+
 const auth = useFirebaseAuth()!
-import { signOut } from 'firebase/auth'
-import { useAlertStore } from '~/stores/alert'
 
 const alertStore = useAlertStore()
 
-import { AlertType } from '~/types/components.d'
 const logout = async () => {
   console.log('logout')
   await signOut(auth)
@@ -98,11 +106,7 @@ watch(isAdmin, () => {
   console.log('isAdmin', isAdmin.value)
 })
 
-import { useSidebarStore } from '~/stores/sidebar'
 const sidebarStore = useSidebarStore()
-
-import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth'
-import { useFirebaseAuth } from 'vuefire'
 
 const login = async () => {
   localStorage.setItem('login-in-progress', 'true')
@@ -112,17 +116,6 @@ const login = async () => {
     console.error('Failed signinRedirect', reason)
   })
 }
-
-useHead({
-  link: [
-    {
-      rel: "preload",
-      href: "/images/logo.webp",
-      as: "image",
-      type: "image/webp"
-    }
-  ]
-});
 
 </script>
 

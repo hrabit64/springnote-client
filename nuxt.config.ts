@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     '/posts/:id': { swr: true },
     '/post-list': { swr: true },
     '/series-list': { swr: true },
-    '/series/:id': { swr: true },
+    '/series/:id': { swr: true }
   },
   modules: [
     '@vueuse/motion/nuxt',
@@ -21,7 +21,7 @@ export default defineNuxtConfig({
   ],
 
   nitro: {
-    compressPublicAssets: true,
+    compressPublicAssets: true
   },
   vite: {
     define: {
@@ -30,7 +30,7 @@ export default defineNuxtConfig({
   },
   build: {
     transpile: ['vuetify'],
-    // 최적화된 빌드를 위해 추가 설정
+
     extractCSS: true,
     optimization: {
       splitChunks: {
@@ -39,17 +39,12 @@ export default defineNuxtConfig({
         commons: true
       }
     },
-    // 추가 설정
-    extend(config, { isDev, isClient }) {
-      if (!isDev && isClient) {
-        config.optimization.minimizer = [
-          // JavaScript 최적화 (예: Terser)
-          new TerserPlugin(),
-          // CSS 최적화 (예: CSSMinimizer)
-          new CssMinimizerPlugin()
-        ]
+    terser: {
+      compress: {
+        drop_console: true // 콘솔 로그 제거
       }
     }
+
   },
 
   // ssr 모드이지만, 서버사이드에서는 인증이 필요 없으므로, 오직 클라이언트 모듈만 사용한다.
@@ -66,8 +61,7 @@ export default defineNuxtConfig({
   components: true,
   plugins: [
     { src: '~/plugins/analytics.client', mode: 'client' },
-    // { src: '~/plugins/vue-recaptcha-v3.client', mode: 'client' },
-    '~/plugins/ssr-client-hints',
+    '~/plugins/ssr-client-hints'
   ],
 
   app: {
@@ -80,15 +74,24 @@ export default defineNuxtConfig({
         // dns-prefetch 설정
         { rel: 'dns-prefetch', href: 'https://www.google.com' },
         { rel: 'dns-prefetch', href: 'https://firebase.googleapis.com' }
+      ],
+      meta: [
+        {
+          name: 'springnote.blog',
+          description: 'springnote.blog 는 백엔드 관련 기술을 주로 다루는 개발 블로그입니다.',
+          'og:title': 'springnote.blog',
+          'og:description': 'springnote.blog 는 백엔드 관련 기술을 주로 다루는 개발 블로그입니다.',
+          'og:type': 'article',
+          'og:site_name': 'springnote.blog',
+          'og:locale': 'ko_KR'
+        }
       ]
     }
   },
 
   ssr: true,
 
-  css: [
-    '@/assets/css/fonts.css'
-  ],
+  css: [],
 
   pinia: {
     storesDirs: ['./stores/**']
@@ -114,20 +117,32 @@ export default defineNuxtConfig({
   vuetify: {
     moduleOptions: {
       ssrClientHints: {
-        viewportSize: true,         // 클라이언트 뷰포트 정보를 SSR에 전달
-        prefersColorScheme: true,   // 색상 테마 정보 전달 (옵션)
-        prefersReducedMotion: true, // 모션 선호도 정보 전달 (옵션)
-        reloadOnFirstRequest: false // 첫 요청 후 리로드하지 않음 (필요 시 설정)
+        viewportSize: true,
+        prefersColorScheme: true,
+        prefersReducedMotion: true,
+        reloadOnFirstRequest: false
+      },
+      defaultAssets: {
+        font: false,   // 기본 폰트(예: Roboto) 제거
+        icons: false   // 기본 아이콘 폰트 자동 로드를 제거
       }
     },
 
 
-    defaultAssets: { font: false },
+    defaultAssets: {
+      font: false,   // 기본 폰트(예: Roboto) 제거
+      icons: false   // 기본 아이콘 폰트 자동 로드를 제거
+    },
     treeShake: true,
 
     vuetifyOptions: {
+
+      iconfont: 'mdiSvg',
       blueprint: md3,
-      defaultAssets: { font: false },
+      defaultAssets: {
+        font: false,   // 기본 폰트(예: Roboto) 제거
+        icons: false   // 기본 아이콘 폰트 자동 로드를 제거
+      },
       theme: {
         defaultTheme: 'darkSpringTheme',
         themes: {
@@ -172,7 +187,7 @@ export default defineNuxtConfig({
     public: {
       siteKey: process.env.RECAPTCHA_SITE_KEY,
       baseUrl: process.env.BASE_URL || 'http://localhost:3000',
-      baseImgUrl: process.env.BASE_IMG_URL || 'http://localhost:3000',
+      baseImgUrl: process.env.BASE_IMG_URL || 'http://localhost:3000'
     }
   }
 })

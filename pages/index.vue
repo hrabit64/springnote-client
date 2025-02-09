@@ -4,7 +4,8 @@
       <v-col cols="12">
         <WindowCard w="100%">
           <template v-slot:title>
-            <v-icon>mdi-human-greeting-variant</v-icon> Hello, Springnote.blog!
+            <v-icon>mdi-human-greeting</v-icon>
+            Hello, Springnote.blog!
           </template>
           <v-row class="pa-5" justify="center" align="center">
             <v-col cols="12" class="justify-center align-center">
@@ -17,8 +18,8 @@
               >
                 <v-card-title class="justify-center align-center">
                   <p class="text-md-h2 text-h3 bold-font text-center">
-                    <v-icon class="mr-1">mdi-human-greeting-variant</v-icon
-                    >Hello
+                    <v-icon class="ml-1">mdi-human-greeting</v-icon>
+                    Hello
                   </p>
                   <p
                     class="text-md-h3 text-h5 text-primary bold-font mb-5 text-white wrap-text text-center"
@@ -51,11 +52,17 @@
                         variant="outlined"
                         block
                         @click.stop="goTo('/series-list')"
-                        ><v-icon class="mr-1">mdi-folder-file</v-icon>전체
-                        시리즈 보기<v-icon class="ml-2"
-                          >mdi-arrow-right</v-icon
-                        ></v-btn
-                      ></v-col
+                      >
+                        <v-icon class="mr-1">mdi-folder-multiple</v-icon>
+                        전체
+                        시리즈 보기
+                        <v-icon class="ml-2"
+                        >mdi-arrow-right
+                        </v-icon
+                        >
+                      </v-btn
+                      >
+                    </v-col
                     >
                     <v-col cols="12" md="4">
                       <v-btn
@@ -63,11 +70,18 @@
                         variant="outlined"
                         block
                         @click.stop="goTo('/post-list')"
-                        ><v-icon class="mr-1">mdi-file-document-multiple</v-icon
-                        >전체 포스트 보기<v-icon class="ml-2"
-                          >mdi-arrow-right</v-icon
-                        ></v-btn
-                      ></v-col
+                      >
+                        <v-icon class="mr-1">mdi-file-document-multiple
+                        </v-icon
+                        >
+                        전체 포스트 보기
+                        <v-icon class="ml-2"
+                        >mdi-arrow-right
+                        </v-icon
+                        >
+                      </v-btn
+                      >
+                    </v-col
                     >
 
                     <v-col cols="12" justify="center" align="center">
@@ -92,6 +106,7 @@
                           src="@/public/images/flying-bird.webp"
                           class="text-center"
                           max-width="300"
+                          transition="false"
                         ></v-img>
                       </div>
                     </v-col>
@@ -141,6 +156,7 @@ const goTo = (path: string) => {
 }
 
 import { useDisplay } from 'vuetify'
+
 const { mobile } = useDisplay()
 </script>
 

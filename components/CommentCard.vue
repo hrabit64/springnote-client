@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto" color="success" elevation="0">
-    <template v-slot:prepend> </template>
+    <template v-slot:prepend></template>
 
     <!--    작성자 및 수정,삭제-->
     <v-card-title v-if="!isLoading" class="mb-2">
@@ -9,7 +9,7 @@
       <span
         v-if="isMyComment"
         class="text-subtitle-2 bold-font text-grey-darken-2 d-inline mx-2"
-        >(나)
+      >(나)
       </span>
       <p
         class="text-subtitle-1 bold-font text-primary d-inline"
@@ -18,19 +18,21 @@
           v-if="comment.writer.admin"
           class="bold-font"
           variant="outlined"
-          >관리자</v-chip
+        >관리자
+        </v-chip
         >
         {{ comment.writer.name }}
       </p>
       <span
         class="text-subtitle-2 bold-font text-grey-darken-2 d-inline ml-2"
-        ># {{ comment.id }}</span
+      ># {{ comment.id }}</span
       >
 
       <p
         v-if="isMyComment && !isEdit && !isDelete && comment.enabled"
         class="text-subtitle-1 d-inline mx-4"
         @click.stop="openEdit"
+        style="cursor: pointer"
       >
         <v-icon>mdi-comment-edit</v-icon>
       </p>
@@ -38,6 +40,7 @@
         v-if="isMyComment && !isEdit && !isDelete && comment.enabled"
         class="text-subtitle-1 d-inline"
         @click.stop="openDelete"
+        style="cursor: pointer"
       >
         <v-icon class="text-red">mdi-comment-remove</v-icon>
       </p>
@@ -77,7 +80,7 @@
 
         <v-btn color="red" variant="text" @click.stop="closeDelete">
           <v-icon>mdi-cancel</v-icon>
-          <v-tooltip activator="parent" location="bottom"> 취소 </v-tooltip>
+          <v-tooltip activator="parent" location="bottom"> 취소</v-tooltip>
         </v-btn>
       </v-alert>
     </v-card-text>
@@ -110,14 +113,15 @@
 
       <v-btn color="red" variant="text" @click.stop="closeEdit">
         <v-icon>mdi-cancel</v-icon>
-        <v-tooltip activator="parent" location="bottom"> 취소 </v-tooltip>
+        <v-tooltip activator="parent" location="bottom"> 취소</v-tooltip>
       </v-btn>
     </v-card-text>
 
     <!--    대댓글-->
-    <v-card-text v-if="!isLoading && !no_reply" @click.stop="openReply">
+    <v-card-text v-if="!isLoading && !no_reply" @click.stop="openReply" style="cursor: pointer">
       <p class="bold-font">
-        <v-icon>mdi-comment-text-multiple</v-icon> {{ comment.reply_count }}
+        <v-icon>mdi-comment-text-multiple</v-icon>
+        {{ comment.reply_count }}
       </p>
     </v-card-text>
 
@@ -129,7 +133,11 @@
   <RecaptchaManager ref="recaptcha" />
 </template>
 <script setup lang="ts">
+
 import type { CommentResponse } from '~/types/comment-response'
+import { useUserStore } from '~/stores/user'
+import { deleteComment, updateComment } from '~/api/comment.api'
+import { useCommentSidebarStore } from '~/stores/comment-sidebar'
 
 const props = defineProps({
   comment: {
@@ -145,7 +153,6 @@ const props = defineProps({
 
 const isLoading = ref(false)
 const honeyPot = ref(false)
-import { useUserStore } from '~/stores/user'
 
 const userStore = useUserStore()
 
@@ -167,8 +174,6 @@ const rules = reactive({
   min: v => (v && v.length >= 3) || '3자 이상 입력해주세요',
   max: v => (v && v.length <= 1000) || '최대 1000자 까지 가능합니다.'
 })
-
-import { updateComment } from '~/api/comment.api'
 
 const RecaptchaManager = defineAsyncComponent(() => import('@/components/RecaptchaManager.vue'))
 const recaptcha = ref<InstanceType<typeof RecaptchaManager> | null>(null)
@@ -205,8 +210,6 @@ const closeDelete = () => {
   isDelete.value = false
 }
 
-import { deleteComment } from '~/api/comment.api'
-
 const rm = async () => {
   closeEdit()
   closeDelete()
@@ -219,7 +222,6 @@ const rm = async () => {
   isLoading.value = false
 }
 
-import { useCommentSidebarStore } from '~/stores/comment-sidebar'
 const commentSidebarStore = useCommentSidebarStore()
 
 const openReply = () => {

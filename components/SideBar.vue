@@ -4,12 +4,13 @@
     class="text-left no-transition mr-2"
     border="false"
     :permanent="!mobile"
+    :temporary="mobile"
     floating
-    color="success"
     v-model="open"
-    temporary
+    color="success"
+    :disable-resize-watcher="true"
+    :mobile-break-point="3000"
     app
-    disable-resize-watcher
   >
     <v-list weight="100%">
       <v-list-subheader>FOLDERS</v-list-subheader>
@@ -52,6 +53,8 @@
 
 <script lang="ts" setup>
 import { useDisplay } from 'vuetify'
+import { useSidebarStore } from '~/stores/sidebar'
+
 interface SideBarItem {
   title: string
   link: string
@@ -60,7 +63,7 @@ interface SideBarItem {
 
 const folderItems = ref<SideBarItem[]>([
   { title: 'Home', link: '/', icon: 'mdi-folder-home' },
-  { title: 'Series', link: '/series-list', icon: 'mdi-folder-file' },
+  { title: 'Series', link: '/series-list', icon: 'mdi-folder-multiple' },
   { title: 'Posts', link: '/post-list', icon: 'mdi-file-document-multiple' }
   // { title: 'Projects', link: '/projects', icon: 'mdi-folder-table' },
   // { title: 'About', link: '/junser-hwang', icon: 'mdi-folder-account' }
@@ -78,11 +81,12 @@ const goTo = (link: string) => {
   }
   router.push(link)
 }
-import { useDisplay } from 'vuetify'
+
 const { mobile } = useDisplay()
-import { useSidebarStore } from '~/stores/sidebar'
+
 const sidebarStore = useSidebarStore()
 const { open } = storeToRefs(sidebarStore)
+
 open.value = !mobile.value
 
 watch(mobile, () => {
@@ -91,16 +95,17 @@ watch(mobile, () => {
 </script>
 
 <style scoped>
-.fixed-bar {
-  position: sticky;
-  position: -webkit-sticky; /* for Safari */
-  top: 6em;
-  z-index: 2;
+
+
+.v-navigation-drawer {
+  transition: none !important;
+
 }
 
-.v-navbar {
-  transition: none !important;
+.navigation-drawer-transition-duration {
+  transition-duration: 0s !important;
 }
+
 
 .v-fade-transition-enter-active,
 .v-fade-transition-leave-active,
@@ -108,4 +113,8 @@ watch(mobile, () => {
 .v-fade-transition-leave-to {
   transition: none !important;
 }
+</style>
+
+<style lang="sass" scoped>
+$navigation-drawer-transition-property: none !important
 </style>

@@ -43,13 +43,16 @@
         </v-card>
       </v-col>
     </template>
-    <template v-slot:empty> </template>
+    <template v-slot:empty></template>
   </v-infinite-scroll>
   <v-col cols="12" v-if="isNoContent">
     <v-card class="mx-auto" elevation="0">
       <v-card-text class="text-center bold-font text-subtitle-1"
-        ><v-icon class="mr-2">mdi-alert-circle</v-icon>댓글이
-        없습니다.</v-card-text
+      >
+        <v-icon class="mr-2">mdi-alert-circle</v-icon>
+        댓글이
+        없습니다.
+      </v-card-text
       >
     </v-card>
     <v-divider class="my-2"></v-divider>
@@ -58,18 +61,19 @@
   <LoginCard v-else />
 </template>
 <script setup lang="ts">
-import type { CommentResponse } from '~/types/comment-response'
-
 import type { ReplyResponse } from '~/types/comment-response'
 import { IsPageRepliesResponse } from '~/types/comment-response.d'
 import { getRepliesByCommentId } from '~/api/comment.api'
+import { useCommentSidebarStore } from '~/stores/comment-sidebar'
+import { useDisplay } from 'vuetify'
+import { useUserStore } from '~/stores/user'
+import { v4 } from 'uuid'
 
 const comments = ref<ReplyResponse[]>([])
 let page = 0
 let isLast = false
 const isNoContent = ref(false)
 
-import { useCommentSidebarStore } from '~/stores/comment-sidebar'
 const commentSidebarStore = useCommentSidebarStore()
 const { parentComment } = storeToRefs(commentSidebarStore)
 
@@ -91,6 +95,7 @@ const getComments = async () => {
     isNoContent.value = true
   }
 }
+
 async function load({ done }) {
   if (isLast) {
     done('empty')
@@ -99,8 +104,7 @@ async function load({ done }) {
     done('ok')
   }
 }
-import { useDisplay } from 'vuetify'
-import { useUserStore } from '~/stores/user'
+
 const { mobile } = useDisplay()
 const userStore = useUserStore()
 const { name } = storeToRefs(userStore)
@@ -109,7 +113,7 @@ const calHeight = () => {
   if (mobile.value) {
     return name.value === '' ? '50vh' : '33vh'
   }
-  return name.value === '' ? '60vh' : '50vh'
+  return name.value === '' ? '55vh' : '50vh'
 }
 
 const commentList = reactive({
@@ -120,7 +124,6 @@ watch(name, () => {
   commentList.height = calHeight()
 })
 
-import { v4 } from 'uuid'
 const id = ref(v4())
 
 const refresh = () => {

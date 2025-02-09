@@ -13,9 +13,12 @@
     </client-only>
 
     <v-main>
+
       <slot></slot>
     </v-main>
+    <v-footer>
 
+    </v-footer>
 
     <client-only>
       <v-fab
@@ -50,6 +53,7 @@
 <script setup lang="ts">
 import { useDisplay } from 'vuetify'
 import { useCommentSidebarStore } from '~/stores/comment-sidebar'
+
 const commentSidebarStore = useCommentSidebarStore()
 const { mobile } = useDisplay()
 const goTop = () => {
@@ -58,9 +62,15 @@ const goTop = () => {
 </script>
 
 <style>
+
+.v-main {
+  padding-top: 64px;
+}
+
 .main-font {
   font-family: 'JetBrains Mono', 'D2Coding', monospace !important;
 }
+
 /* width */
 ::-webkit-scrollbar {
   width: 3px;
@@ -80,6 +90,7 @@ const goTop = () => {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
 
 </style>
 <style scoped></style>

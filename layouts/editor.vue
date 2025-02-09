@@ -15,6 +15,7 @@
 </template>
 <script setup lang="ts">
 import { useCommentSidebarStore } from '~/stores/comment-sidebar'
+
 const commentSidebarStore = useCommentSidebarStore()
 </script>
 
@@ -22,6 +23,7 @@ const commentSidebarStore = useCommentSidebarStore()
 .main-font {
   font-family: 'JetBrains Mono', 'D2Coding', monospace !important;
 }
+
 /* width */
 ::-webkit-scrollbar {
   width: 3px;
@@ -42,13 +44,9 @@ const commentSidebarStore = useCommentSidebarStore()
   background: #555;
 }
 
-.no-transition {
-  transition: none !important;
+.v-main {
+  padding-top: 64px;
 }
 
-.wrap-text {
-  white-space: normal !important;
-  word-wrap: break-word !important;
-}
 </style>
 <style scoped></style>

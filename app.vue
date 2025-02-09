@@ -32,3 +32,7 @@ onMounted(() => {
   min-height: 0vh !important;
 }
 </style>
+
+<style lang="postcss">
+@import '@/assets/css/fonts.css';
+</style>

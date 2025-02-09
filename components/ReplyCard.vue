@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto my-2" color="success" elevation="0">
-    <template v-slot:prepend> </template>
+    <template v-slot:prepend></template>
 
     <!--    작성자 및 수정,삭제-->
     <v-card-title v-if="!isLoading" class="mb-2">
@@ -10,7 +10,7 @@
         v-if="isMyComment"
         class="text-subtitle-2 bold-font
          text-grey-darken-2 d-inline mx-2"
-        >(나)
+      >(나)
       </span>
       <p
         class="text-subtitle-1 bold-font
@@ -21,14 +21,15 @@
           class="bold-font
 "
           variant="outlined"
-          >관리자</v-chip
+        >관리자
+        </v-chip
         >
         {{ comment.writer.name }}
       </p>
       <span
         class="text-subtitle-2 bold-font
          text-grey-darken-2 d-inline ml-2"
-        ># {{ comment.id }}</span
+      ># {{ comment.id }}</span
       >
 
       <p
@@ -42,6 +43,7 @@
         v-if="isMyComment && !isEdit && !isDelete && comment.enabled"
         class="text-subtitle-1 d-inline"
         @click.stop="openDelete"
+        style="cursor: pointer"
       >
         <v-icon class="text-red">mdi-comment-remove</v-icon>
       </p>
@@ -50,6 +52,7 @@
         v-if="isEdit"
         class="text-subtitle-1 d-inline mx-4"
         @click.stop="openDelete"
+        style="cursor: pointer"
       >
         <v-icon class="text-red">mdi-comment-remove</v-icon>
       </p>
@@ -82,7 +85,7 @@
 
         <v-btn color="red" variant="text" @click.stop="closeDelete">
           <v-icon>mdi-cancel</v-icon>
-          <v-tooltip activator="parent" location="bottom"> 취소 </v-tooltip>
+          <v-tooltip activator="parent" location="bottom"> 취소</v-tooltip>
         </v-btn>
       </v-alert>
     </v-card-text>
@@ -115,7 +118,7 @@
 
       <v-btn color="red" variant="text" @click.stop="closeEdit">
         <v-icon>mdi-cancel</v-icon>
-        <v-tooltip activator="parent" location="bottom"> 취소 </v-tooltip>
+        <v-tooltip activator="parent" location="bottom"> 취소</v-tooltip>
       </v-btn>
     </v-card-text>
 
@@ -124,7 +127,8 @@
     </v-card-text>
 
     <v-checkbox v-model="honeyPot" style="display: none"
-      >I'm Not Bot</v-checkbox
+    >I'm Not Bot
+    </v-checkbox
     >
   </v-card>
 
@@ -132,6 +136,8 @@
 </template>
 <script setup lang="ts">
 import type { ReplyResponse } from '~/types/comment-response'
+import { useUserStore } from '~/stores/user'
+import { deleteComment, updateComment } from '~/api/comment.api'
 
 const props = defineProps({
   comment: {
@@ -142,7 +148,6 @@ const props = defineProps({
 
 const isLoading = ref(false)
 const honeyPot = ref(false)
-import { useUserStore } from '~/stores/user'
 
 const userStore = useUserStore()
 
@@ -165,7 +170,6 @@ const rules = reactive({
   max: v => (v && v.length <= 1000) || '최대 1000자 까지 가능합니다.'
 })
 
-import { updateComment } from '~/api/comment.api'
 const RecaptchaManager = defineAsyncComponent(() => import('@/components/RecaptchaManager.vue'))
 const recaptcha = ref<InstanceType<typeof RecaptchaManager> | null>(null)
 
@@ -200,8 +204,6 @@ const openDelete = () => {
 const closeDelete = () => {
   isDelete.value = false
 }
-
-import { deleteComment } from '~/api/comment.api'
 
 
 const rm = async () => {

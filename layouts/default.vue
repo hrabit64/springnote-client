@@ -15,13 +15,18 @@
   </client-only>
 </template>
 <script setup lang="ts">
-import Login from '~/pages/register.vue'
 </script>
 
 <style>
+.v-main {
+  padding-top: 64px;
+}
+
+
 .main-font {
   font-family: 'JetBrains Mono', 'D2Coding', monospace !important;
 }
+
 /* width */
 ::-webkit-scrollbar {
   width: 3px;
@@ -42,13 +47,6 @@ import Login from '~/pages/register.vue'
   background: #555;
 }
 
-.no-transition {
-  transition: none !important;
-}
 
-.wrap-text {
-  white-space: normal !important;
-  word-wrap: break-word !important;
-}
 </style>
 <style scoped></style>
