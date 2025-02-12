@@ -15,10 +15,9 @@
     <v-main>
 
       <slot></slot>
+      <MainFooter />
     </v-main>
-    <v-footer>
 
-    </v-footer>
 
     <client-only>
       <v-fab
@@ -53,6 +52,7 @@
 <script setup lang="ts">
 import { useDisplay } from 'vuetify'
 import { useCommentSidebarStore } from '~/stores/comment-sidebar'
+import MainFooter from '~/components/MainFooter.vue'
 
 const commentSidebarStore = useCommentSidebarStore()
 const { mobile } = useDisplay()

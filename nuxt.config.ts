@@ -8,7 +8,9 @@ export default defineNuxtConfig({
     '/posts/:id': { swr: true },
     '/post-list': { swr: true },
     '/series-list': { swr: true },
-    '/series/:id': { swr: true }
+    '/series/:id': { swr: true },
+    '/term': { swr: true },
+    '/privacy-policy': { swr: true }
   },
   modules: [
     '@vueuse/motion/nuxt',

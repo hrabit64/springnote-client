@@ -5,7 +5,7 @@
         <WindowCard w="100%">
           <template v-slot:title>
             <v-icon>mdi-book</v-icon>
-            개인정보 처리방침
+            사이트 이용약관
           </template>
           <v-card-item class="bg-success pt-5">
             <MarkdownRenderer :content="data" />
@@ -22,11 +22,10 @@
 import { getSiteContent } from '~/api/site-content.api'
 import { isSiteContentResponse } from '~/types/site-content-response.d'
 
-
-const data: string = await getSiteContent('privacy-policy').then((response) => {
+const data: string = await getSiteContent('term').then((response) => {
   if (isSiteContentResponse(response)) {
     return response.content
   }
-  return '죄송합니다. 개인정보 처리방침을 불러오는데 실패했습니다.'
+  return '죄송합니다. 이용약관을 불러오는데 실패했습니다.'
 })
 </script>

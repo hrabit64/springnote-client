@@ -7,7 +7,9 @@
       </client-only>
 
       <slot></slot>
+      <MainFooter />
     </v-main>
+
   </v-app>
   <client-only>
     <AlertSnackBar />
@@ -15,6 +17,7 @@
 </template>
 <script setup lang="ts">
 import { useCommentSidebarStore } from '~/stores/comment-sidebar'
+import MainFooter from '~/components/MainFooter.vue'
 
 const commentSidebarStore = useCommentSidebarStore()
 </script>

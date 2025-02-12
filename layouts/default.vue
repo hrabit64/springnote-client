@@ -8,13 +8,18 @@
     <v-main>
 
       <slot></slot>
+      <MainFooter />
     </v-main>
+
   </v-app>
+
   <client-only>
     <AlertSnackBar />
   </client-only>
+
 </template>
 <script setup lang="ts">
+import MainFooter from '~/components/MainFooter.vue'
 </script>
 
 <style>
