@@ -3,12 +3,6 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue'
-
-const props = defineProps<{
-  content: string
-}>()
-
 import MarkdownIt from 'markdown-it'
 import MarkdownItAbbr from 'markdown-it-abbr'
 import MarkdownItAnchor from 'markdown-it-anchor'
@@ -18,6 +12,10 @@ import MarkdownItSub from 'markdown-it-sub'
 import MarkdownItSup from 'markdown-it-sup'
 import MarkdownItTasklists from 'markdown-it-task-lists'
 import 'highlight.js/styles/github-dark.css'
+
+const props = defineProps<{
+  content: string
+}>()
 
 const md = new MarkdownIt({
   html: true,
@@ -33,30 +31,26 @@ const md = new MarkdownIt({
   .use(MarkdownItTasklists)
 
 
-
-const defaultRender = md.renderer.rules.image || function (tokens, idx, options, env, self) {
-  return self.renderToken(tokens, idx, options);
-};
-
-
-md.renderer.rules.image = function (tokens, idx, options, env, self) {
-  const token = tokens[idx];
-  const srcIndex = token.attrIndex('src');
-  const src = token.attrs?.[srcIndex]?.[1];
-
-  const widthIndex = token.attrIndex('width');
-  const heightIndex = token.attrIndex('height');
-
-  if (widthIndex < 0) token.attrPush(['width', '720']);
-  if (heightIndex < 0) token.attrPush(['height', 'auto']);
-
-  token.attrPush(['rel','preload']);
-
-  return defaultRender(tokens, idx, options, env, self);
-};
+const defaultRender = md.renderer.rules.image || function(tokens, idx, options, env, self) {
+  return self.renderToken(tokens, idx, options)
+}
 
 
+md.renderer.rules.image = function(tokens, idx, options, env, self) {
+  const token = tokens[idx]
+  const srcIndex = token.attrIndex('src')
+  const src = token.attrs?.[srcIndex]?.[1]
 
+  const widthIndex = token.attrIndex('width')
+  const heightIndex = token.attrIndex('height')
+
+  if (widthIndex < 0) token.attrPush(['width', '720'])
+  if (heightIndex < 0) token.attrPush(['height', 'auto'])
+
+  token.attrPush(['rel', 'preload'])
+
+  return defaultRender(tokens, idx, options, env, self)
+}
 
 
 </script>
@@ -70,7 +64,7 @@ md.renderer.rules.image = function (tokens, idx, options, env, self) {
   color: #f0f6fc;
 
   font-family: 'JetBrains Mono', 'D2coding', monospace;
-  font-size: 1rem;
+  font-size: 0.9rem;
   line-height: 2.5;
   word-wrap: break-word;
 }
@@ -183,7 +177,6 @@ md.renderer.rules.image = function (tokens, idx, options, env, self) {
   margin: auto;
   display: block;
 }
-
 
 
 #markdown-wrapper code,
@@ -336,14 +329,13 @@ md.renderer.rules.image = function (tokens, idx, options, env, self) {
 #markdown-wrapper kbd {
   display: inline-block;
   padding: 0.25rem;
-  font:
-    11px ui-monospace,
-    SFMono-Regular,
-    SF Mono,
-    Menlo,
-    Consolas,
-    Liberation Mono,
-    monospace;
+  font: 11px ui-monospace,
+  SFMono-Regular,
+  SF Mono,
+  Menlo,
+  Consolas,
+  Liberation Mono,
+  monospace;
   line-height: 10px;
   color: #f0f6fc;
   vertical-align: middle;
@@ -460,22 +452,26 @@ md.renderer.rules.image = function (tokens, idx, options, env, self) {
   word-wrap: normal;
 
   /* width */
+
   &::-webkit-scrollbar {
     width: 2px;
     height: 2px;
   }
 
   /* Track */
+
   ::-webkit-scrollbar-track {
     background: #222222;
   }
 
   /* Handle */
+
   ::-webkit-scrollbar-thumb {
     background: rgb(55, 55, 55);
   }
 
   /* Handle on hover */
+
   ::-webkit-scrollbar-thumb:hover {
     background: #555;
   }
@@ -698,6 +694,7 @@ md.renderer.rules.image = function (tokens, idx, options, env, self) {
 #markdown-wrapper table td {
   padding: 6px 13px;
 }
+
 #markdown-wrapper table td {
   border-top: 1px solid #424242;
 }
@@ -1150,8 +1147,8 @@ md.renderer.rules.image = function (tokens, idx, options, env, self) {
 
 #markdown-wrapper .contains-task-list:hover .task-list-item-convert-container,
 #markdown-wrapper
-  .contains-task-list:focus-within
-  .task-list-item-convert-container {
+.contains-task-list:focus-within
+.task-list-item-convert-container {
   display: block;
   width: auto;
   height: 24px;
@@ -1198,8 +1195,8 @@ md.renderer.rules.image = function (tokens, idx, options, env, self) {
 }
 
 #markdown-wrapper
-  .markdown-alert.markdown-alert-important
-  .markdown-alert-title {
+.markdown-alert.markdown-alert-important
+.markdown-alert-title {
   color: #ab7df8;
 }
 

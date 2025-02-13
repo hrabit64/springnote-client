@@ -14,11 +14,11 @@
                 variant="outlined"
                 class="pa-5 justify-center align-center"
                 width="100%"
-                style="height: 90vh"
+                style="height: 100vh"
               >
                 <v-card-title class="justify-center align-center">
                   <p class="text-md-h2 text-h3 bold-font text-center">
-                    <v-icon class="ml-1">mdi-human-greeting</v-icon>
+
                     Hello
                   </p>
                   <p
@@ -48,7 +48,7 @@
                   >
                     <v-col cols="12" md="4">
                       <v-btn
-                        class="bold-font"
+                        class="bold-font px-2"
                         variant="outlined"
                         block
                         @click.stop="goTo('/series-list')"
@@ -66,7 +66,7 @@
                     >
                     <v-col cols="12" md="4">
                       <v-btn
-                        class="bold-font"
+                        class="bold-font px-2"
                         variant="outlined"
                         block
                         @click.stop="goTo('/post-list')"

@@ -23,7 +23,7 @@
         </v-item-group>
 
         <template v-slot:loading>
-          <v-col cols="12" class="mx-auto text-center">
+          <v-col cols="12" class="mx-auto text-center" v-show="!isLast">
             <v-card
               class="mx-auto my-2"
               color="success"
@@ -135,9 +135,9 @@ const { mobile } = useDisplay()
 
 const calListHeight = () => {
   if (mobile.value) {
-    return name.value === '' ? '65vh' : '50vh'
+    return name.value === '' ? '55vh' : '60vh'
   }
-  return name.value === '' ? '70vh' : '65vh'
+  return name.value === '' ? '70vh' : '70vh'
 }
 const commentList = reactive({
   height: calListHeight()

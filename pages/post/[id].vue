@@ -17,12 +17,12 @@
           </client-only>
         </v-col>
 
-        <v-col cols="12" md="10" class="mx-4 py-4 my-4 px-4">
+        <v-col cols="12" md="10" class="mx-4 my-4 ">
           <p
             class="text-md-h5 text-subtitle-2 bold-font mt-4 text-white"
             style="cursor: pointer"
             @click.stop="goToSeries(post.series.id)"
-         
+
           >
             {{
               post.series ? '시리즈 | ' + post.series.name : '시리즈 없음'
@@ -33,9 +33,11 @@
             {{ post.title }}
           </p>
         </v-col>
+        <v-col cols="12" md="10" class="mx-4 my-4 ">
+          <v-spacer />
+        </v-col>
 
-
-        <v-col cols="12" md="10" class="mx-4 px-4">
+        <v-col cols="12" md="10" class="mx-4 ">
           <p class="bold-font text-body-2">
             <v-icon class="mx-1">mdi-clock</v-icon>
             작성일 :
@@ -56,7 +58,7 @@
           </template>
         </v-col>
 
-        <v-col cols="12" md="10">
+        <v-col cols="12" md="10" class="mx-4 my-4">
           <PostSameSeriesList :series="post.series" :targetPostId="post.id" />
         </v-col>
 

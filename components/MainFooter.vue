@@ -6,7 +6,7 @@
   >
     <v-row class="mt-5">
       <v-col
-        class="text-center text-caption py-2 mt-5"
+        class="text-center text-caption pt-2 mt-5"
         cols="12"
       >
         <v-spacer></v-spacer>

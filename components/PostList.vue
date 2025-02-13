@@ -38,7 +38,7 @@
       </v-table>
 
       <template v-slot:loading>
-        <v-col cols="12" md="12" class="text-center">
+        <v-col cols="12" md="12" class="text-center" v-show="!isLast">
           <v-card
             class="mx-auto my-2 bg-transparent"
             color="success"

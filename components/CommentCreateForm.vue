@@ -1,26 +1,34 @@
 <template>
   <v-row class="mx-auto" align="center" justify="center">
-    <v-col cols="12" md="10" v-if="!isLoading">
+    <v-col cols="12" md="12" v-if="!isLoading">
       <v-textarea
         clearable
         v-model="content"
+        class="text-caption text-md-body-2 regular-font"
         label="댓글을 남겨주세요."
         variant="outlined"
         hint="3 ~ 1000자"
+        rows="3"
         :rules="[rules.required, rules.min, rules.max]"
         no-resize
       >
-        <template v-slot:prepend>
+        <template v-slot:prepend v-if="!mobile">
           <v-avatar :image="profileImg" />
+        </template>
+        <template v-slot:append>
+          <v-btn @click.stop="create" icon>
+            <v-icon>mdi-upload</v-icon>
+          </v-btn>
         </template>
       </v-textarea>
     </v-col>
-    <v-col cols="12" md="2" v-if="!isLoading">
-      <v-btn @click.stop="create" block> 등록하기 </v-btn>
-    </v-col>
+    <!--    <v-col cols="12" md="2" v-if="!isLoading">-->
+    <!--      <v-btn @click.stop="create" block> 등록하기</v-btn>-->
+    <!--    </v-col>-->
     <v-col cols="12" style="display: none">
       <v-checkbox style="display: none" v-model="commentHoneyPot"
-        >I'm Not Bot</v-checkbox
+      >I'm Not Bot
+      </v-checkbox
       >
     </v-col>
     <v-col cols="12" class="mx-auto text-center" v-if="isLoading">
@@ -32,17 +40,23 @@
 </template>
 <script setup lang="ts">
 import { useCommentSidebarStore } from '~/stores/comment-sidebar'
+import type { CommentCreateRequest } from '~/types/comment-request'
+import { useUserStore } from '~/stores/user'
+import { storeToRefs } from 'pinia'
+import { createComment } from '~/api/comment.api'
+import { useAlertStore } from '~/stores/alert'
+import { AlertType } from '~/types/components.d'
+import { IsCommentResponse } from '~/types/comment-response.d'
+import { useDisplay } from 'vuetify'
+
 const commentSidebarStore = useCommentSidebarStore()
 
 const emits = defineEmits(['create'])
-import type { CommentCreateRequest } from '~/types/comment-request'
 
 const commentHoneyPot = ref(false)
 
-import { useUserStore } from '~/stores/user'
 const userStore = useUserStore()
 
-import { storeToRefs } from 'pinia'
 const { profileImg } = storeToRefs(userStore)
 
 const rules = reactive({
@@ -56,16 +70,10 @@ const content = ref('')
 const RecaptchaManager = defineAsyncComponent(() => import('@/components/RecaptchaManager.vue'))
 const recaptcha = ref<InstanceType<typeof RecaptchaManager> | null>(null)
 
-import { createComment } from '~/api/comment.api'
-
 let isLoading = ref(false)
-import { useAlertStore } from '~/stores/alert'
 
 const alertStore = useAlertStore()
-
-import { AlertType } from '~/types/components.d'
-import { IsCommentResponse } from '~/types/comment-response.d'
-
+const { mobile } = useDisplay()
 const create = async () => {
   if (isLoading.value) {
     return
@@ -117,7 +125,7 @@ const create = async () => {
   let token = ''
 
   if (recaptcha.value) {
-   token = await recaptcha.value.recaptcha('comment_create')
+    token = await recaptcha.value.recaptcha('comment_create')
   } else {
     console.log('recaptcha manager failed')
     alertStore.setMessage({
@@ -127,7 +135,6 @@ const create = async () => {
     isLoading.value = false
     return
   }
-
 
 
   if (!token) {

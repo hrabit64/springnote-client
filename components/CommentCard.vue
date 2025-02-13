@@ -1,93 +1,52 @@
 <template>
   <v-card class="mx-auto" color="success" elevation="0">
-    <template v-slot:prepend></template>
+
 
     <!--    작성자 및 수정,삭제-->
     <v-card-title v-if="!isLoading" class="mb-2">
-      <v-avatar size="36" :image="comment.writer.profile_img" class="mr-4">
-      </v-avatar>
-      <span
-        v-if="isMyComment"
-        class="text-subtitle-2 bold-font text-grey-darken-2 d-inline mx-2"
-      >(나)
+      <v-col cols="12" class="ma-0 pa-0">
+        <v-avatar size="36" :image="comment.writer.profile_img" class="mr-2">
+        </v-avatar>
+
+        <span
+          class="text-subtitle-2 bold-font text-grey-darken-2 d-inline mr-2"
+        >#{{ comment.id }}</span
+        >
+        <span
+          v-if="isMyComment"
+          class="text-subtitle-2 bold-font text-grey-darken-2 d-inline"
+        >(나)
       </span>
-      <p
-        class="text-subtitle-1 bold-font text-primary d-inline"
-      >
         <v-chip
           v-if="comment.writer.admin"
-          class="bold-font"
+          class="bold-font mr-2"
+          color="primary"
           variant="outlined"
         >관리자
         </v-chip
         >
-        {{ comment.writer.name }}
-      </p>
-      <span
-        class="text-subtitle-2 bold-font text-grey-darken-2 d-inline ml-2"
-      ># {{ comment.id }}</span
-      >
+        <p
+          class="text-subtitle-1 bold-font text-primary  d-inline wrap-text"
+        >
+
+          {{ comment.writer.name }}
+        </p>
+      </v-col>
 
       <p
-        v-if="isMyComment && !isEdit && !isDelete && comment.enabled"
-        class="text-subtitle-1 d-inline mx-4"
-        @click.stop="openEdit"
-        style="cursor: pointer"
-      >
-        <v-icon>mdi-comment-edit</v-icon>
-      </p>
-      <p
-        v-if="isMyComment && !isEdit && !isDelete && comment.enabled"
-        class="text-subtitle-1 d-inline"
-        @click.stop="openDelete"
-        style="cursor: pointer"
-      >
-        <v-icon class="text-red">mdi-comment-remove</v-icon>
-      </p>
-
-      <p
-        v-if="isEdit"
-        class="text-subtitle-1 d-inline mx-4"
-        @click.stop="openDelete"
-      >
-        <v-icon class="text-red">mdi-comment-remove</v-icon>
-      </p>
-
-      <p
-        class="text-subtitle-2 bold-font text-grey-darken-1 my-2"
+        class="text-subtitle-2 bold-font
+         text-grey-darken-1 my-2"
       >
         {{ comment.created_date.replace('T', ' ').replace('Z', '') }}
       </p>
+
+
     </v-card-title>
 
-    <!--    삭제 전 확인-->
-    <v-card-text v-if="isDelete">
-      <v-alert
-        class="bold-font"
-        icon="mdi-alert"
-        type="warning"
-      >
-        <v-alert-title>
-          <p class="bold-font">정말로 삭제하시겠습니까?</p>
-        </v-alert-title>
-        <p class="bold-font">
-          삭제된 댓글은 복구가 불가능합니다. 그래도 삭제하시겠습니까?
-        </p>
-        <v-btn variant="text" @click.stop="rm">
-          <v-icon>mdi-check</v-icon>
-          <v-tooltip activator="parent" location="bottom">확인</v-tooltip>
-        </v-btn>
-
-        <v-btn color="red" variant="text" @click.stop="closeDelete">
-          <v-icon>mdi-cancel</v-icon>
-          <v-tooltip activator="parent" location="bottom"> 취소</v-tooltip>
-        </v-btn>
-      </v-alert>
-    </v-card-text>
 
     <!--    본문-->
     <v-card-text v-if="!isLoading && comment.enabled">
-      <p class="bold-font">
+      <p class="bold-font text-caption text-md-body-2">
         {{ comment.content }}
       </p>
     </v-card-text>
@@ -119,10 +78,58 @@
 
     <!--    대댓글-->
     <v-card-text v-if="!isLoading && !no_reply" @click.stop="openReply" style="cursor: pointer">
-      <p class="bold-font">
+      <p class="bold-font d-inline">
         <v-icon>mdi-comment-text-multiple</v-icon>
         {{ comment.reply_count }}
       </p>
+      <p
+        v-if="isMyComment && !isEdit && !isDelete && comment.enabled"
+        class="text-subtitle-1 d-inline mx-2 ml-4"
+        @click.stop="openEdit"
+        style="cursor: pointer"
+      >
+        <v-icon>mdi-comment-edit</v-icon>
+      </p>
+      <p
+        v-if="isMyComment && !isEdit && !isDelete && comment.enabled"
+        class="text-subtitle-1 d-inline"
+        @click.stop="openDelete"
+        style="cursor: pointer"
+      >
+        <v-icon class="text-red">mdi-comment-remove</v-icon>
+      </p>
+
+      <p
+        v-if="isEdit"
+        class="text-subtitle-1 d-inline mx-4"
+        @click.stop="openDelete"
+      >
+        <v-icon class="text-red">mdi-comment-remove</v-icon>
+      </p>
+    </v-card-text>
+    <!--    삭제 전 확인-->
+    <v-card-text v-if="isDelete">
+      <v-alert
+        class="bold-font"
+        icon="mdi-alert"
+        type="warning"
+      >
+        <v-alert-title>
+          <p class="bold-font">정말로 삭제하시겠습니까?</p>
+        </v-alert-title>
+        <p class="bold-font">
+          삭제된 댓글은 복구가 불가능합니다. 그래도 삭제하시겠습니까?
+        </p>
+        <v-btn variant="text" @click.stop="rm">
+          <v-icon>mdi-check</v-icon>
+          <v-tooltip activator="parent" location="bottom">확인</v-tooltip>
+        </v-btn>
+
+        <v-btn color="red" variant="text" @click.stop="closeDelete">
+          <v-icon>mdi-cancel</v-icon>
+          <v-tooltip activator="parent" location="bottom"> 취소</v-tooltip>
+        </v-btn>
+      </v-alert>
     </v-card-text>
 
     <v-card-text class="mx-auto text-center" v-if="isLoading">
@@ -229,3 +236,10 @@ const openReply = () => {
   commentSidebarStore.replyToggle()
 }
 </script>
+
+<style scoped>
+.wrap-text {
+  white-space: normal; /* 기본 값으로 자동 줄바꿈을 설정 */
+  word-wrap: break-word;
+}
+</style>

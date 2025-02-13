@@ -4,6 +4,7 @@
     <v-col cols="12" md="4">
       <windowCard
         w="100%"
+   
         class="my-2"
         @close="goToSeriesList"
         @minus="goToSeriesList"
@@ -105,6 +106,7 @@
                 class="mx-auto my-2 bg-transparent"
                 color="success"
                 elevation="0"
+                v-show="!isLast"
                 width="100%"
                 v-for="n in 3"
               >

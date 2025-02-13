@@ -23,7 +23,7 @@
     </v-item-group>
 
     <template v-slot:loading>
-      <v-col cols="12" class="mx-auto text-center">
+      <v-col cols="12" class="mx-auto text-center" v-show="!isLast">
         <v-card class="mx-auto my-2" color="success" elevation="0" width="100%">
           <v-skeleton-loader
             type="list-item-avatar"
@@ -57,8 +57,11 @@
     </v-card>
     <v-divider class="my-2"></v-divider>
   </v-col>
-  <ReplyCreateForm class="mx-2" v-if="name !== ''" @create="refresh" />
-  <LoginCard v-else />
+  <v-col cols="12">
+    <ReplyCreateForm class="mx-2" v-if="name !== ''" @create="refresh" />
+  </v-col>
+
+  <LoginCard v-if="name === ''" />
 </template>
 <script setup lang="ts">
 import type { ReplyResponse } from '~/types/comment-response'
@@ -111,7 +114,7 @@ const { name } = storeToRefs(userStore)
 
 const calHeight = () => {
   if (mobile.value) {
-    return name.value === '' ? '50vh' : '33vh'
+    return name.value === '' ? '35vh' : '35vh'
   }
   return name.value === '' ? '55vh' : '50vh'
 }

@@ -37,6 +37,7 @@
             elevation="0"
             width="100%"
             v-for="n in 3"
+            v-show="!isLast"
           >
             <v-skeleton-loader
               type="list-item-avatar"
