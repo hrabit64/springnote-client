@@ -14,7 +14,7 @@
                 variant="outlined"
                 class="pa-5 justify-center align-center"
                 width="100%"
-                style="height: 80vh"
+                style="height: 90vh"
               >
                 <v-card-title class="justify-center align-center">
                   <p class="text-md-h2 text-h3 bold-font text-center">

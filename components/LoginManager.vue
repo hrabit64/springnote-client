@@ -254,7 +254,7 @@ onMounted(async () => {
     const result = await getRedirectResult(<Auth>auth)
     if (result) {
       const user = await getSelf()
-      if (isUserResponse(user)) {
+      if (isUserResponse(user) && user.enabled) {
         userStore.saveUser(
           user.display_name,
           user.uid,
@@ -265,6 +265,13 @@ onMounted(async () => {
           message: '환영합니다, ' + user.display_name + '님!',
           type: AlertType.Success
         })
+      } else if (isUserResponse(user) && !user.enabled) {
+        alertStore.setMessage({
+          message: '해당 계정은 비활성화 되었습니다. 관리자에게 문의하세요.',
+          type: AlertType.Error
+        })
+        await signOut(auth)
+
       } else {
         isRegister.value = true
       }
