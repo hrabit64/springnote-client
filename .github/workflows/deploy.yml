@@ -1,6 +1,7 @@
 name: Client Deploy
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
 
@@ -15,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # 사용할 Node.js 버전 지정
+          node-version: '18'
 
       - name: setup tmp dir
         run: mkdir -p tmp
@@ -23,7 +24,7 @@ jobs:
       - name: get secrets
         uses: actions/checkout@v3
         with:
-          repository: hrabit64/springnote-breezenote-secret
+          repository: hrabit64/springnote-client-secret
           ref: main
           path: "tmp"
           token: ${{ secrets.TOKEN }}
@@ -34,7 +35,7 @@ jobs:
       - name: remove tmp dir
         run: rm -rf tmp
 
-      # 현재 소스코드를 압축하여 파일로 만들어서 서버로 전송
+
       - name: Archive production artifacts
         run: tar -czvf client.tar.gz ./
 
