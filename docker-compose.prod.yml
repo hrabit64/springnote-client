@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   springnote-client:
-    image: springnote-client-test:latest
+    image: springnote-client:latest
     container_name: springnote-client
     networks:
       - springnote_net
