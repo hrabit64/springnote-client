@@ -1,48 +1,62 @@
 <template>
   <v-row class="mx-auto" align="center" justify="center">
-    <v-col cols="12" md="10" v-if="!isLoading">
+    <v-col cols="12" md="12" v-if="!isLoading">
       <v-textarea
         clearable
         v-model="content"
+        class="text-caption text-md-body-2 regular-font"
         label="댓글을 남겨주세요."
         variant="outlined"
         hint="3 ~ 1000자"
+        rows="3"
         :rules="[rules.required, rules.min, rules.max]"
         no-resize
       >
-        <template v-slot:prepend>
+        <template v-slot:prepend v-if="!mobile">
           <v-avatar :image="profileImg" />
+        </template>
+        <template v-slot:append>
+          <v-btn @click.stop="create" icon>
+            <v-icon>mdi-upload</v-icon>
+          </v-btn>
         </template>
       </v-textarea>
     </v-col>
-    <v-col cols="12" md="2" v-if="!isLoading">
-      <v-btn @click.stop="create" block> 등록하기 </v-btn>
-    </v-col>
+    <!--    <v-col cols="12" md="2" v-if="!isLoading">-->
+    <!--      <v-btn @click.stop="create" block> 등록하기</v-btn>-->
+    <!--    </v-col>-->
     <v-col cols="12" style="display: none">
       <v-checkbox style="display: none" v-model="commentHoneyPot"
-        >I'm Not Bot</v-checkbox
+      >I'm Not Bot
+      </v-checkbox
       >
     </v-col>
     <v-col cols="12" class="mx-auto text-center" v-if="isLoading">
       <v-progress-circular color="primary" indeterminate></v-progress-circular>
     </v-col>
   </v-row>
+
+  <RecaptchaManager ref="recaptcha" />
 </template>
 <script setup lang="ts">
-import { useReCaptcha } from 'vue-recaptcha-v3'
-
 import { useCommentSidebarStore } from '~/stores/comment-sidebar'
+import type { CommentCreateRequest } from '~/types/comment-request'
+import { useUserStore } from '~/stores/user'
+import { storeToRefs } from 'pinia'
+import { createComment } from '~/api/comment.api'
+import { useAlertStore } from '~/stores/alert'
+import { AlertType } from '~/types/components.d'
+import { IsCommentResponse } from '~/types/comment-response.d'
+import { useDisplay } from 'vuetify'
+
 const commentSidebarStore = useCommentSidebarStore()
 
 const emits = defineEmits(['create'])
-import type { CommentCreateRequest } from '~/types/comment-request'
 
 const commentHoneyPot = ref(false)
 
-import { useUserStore } from '~/stores/user'
 const userStore = useUserStore()
 
-import { storeToRefs } from 'pinia'
 const { profileImg } = storeToRefs(userStore)
 
 const rules = reactive({
@@ -52,24 +66,14 @@ const rules = reactive({
 })
 
 const content = ref('')
-const recaptchaInstance = useReCaptcha()
-const recaptcha = async () => {
-  // optional you can await for the reCaptcha load
-  await recaptchaInstance?.recaptchaLoaded()
 
-  // get the token, a custom action could be added as argument to the method
-  return recaptchaInstance?.executeRecaptcha('post_create')
-}
-
-import { createComment } from '~/api/comment.api'
+const RecaptchaManager = defineAsyncComponent(() => import('@/components/RecaptchaManager.vue'))
+const recaptcha = ref<InstanceType<typeof RecaptchaManager> | null>(null)
 
 let isLoading = ref(false)
-import { useAlertStore } from '~/stores/alert'
 
 const alertStore = useAlertStore()
-
-import { AlertType } from '~/types/components.d'
-import { IsCommentResponse } from '~/types/comment-response.d'
+const { mobile } = useDisplay()
 const create = async () => {
   if (isLoading.value) {
     return
@@ -80,7 +84,7 @@ const create = async () => {
     console.log('bot detected')
     alertStore.setMessage({
       message: '봇이 감지되었습니다.',
-      type: AlertType.ERROR
+      type: AlertType.Error
     })
     isLoading.value = false
     return
@@ -90,7 +94,7 @@ const create = async () => {
     console.log('empty content')
     alertStore.setMessage({
       message: '내용을 입력해주세요.',
-      type: AlertType.ERROR
+      type: AlertType.Error
     })
     isLoading.value = false
     return
@@ -100,7 +104,7 @@ const create = async () => {
     console.log('content too short')
     alertStore.setMessage({
       message: '3자 이상 입력해주세요.',
-      type: AlertType.ERROR
+      type: AlertType.Error
     })
     isLoading.value = false
     return
@@ -110,7 +114,7 @@ const create = async () => {
     console.log('content too long')
     alertStore.setMessage({
       message: '최대 1000자 까지 가능합니다.',
-      type: AlertType.ERROR
+      type: AlertType.Error
     })
     isLoading.value = false
     return
@@ -118,13 +122,26 @@ const create = async () => {
 
   console.log('create comment')
 
-  const token = await recaptcha()
+  let token = ''
+
+  if (recaptcha.value) {
+    token = await recaptcha.value.recaptcha('comment_create')
+  } else {
+    console.log('recaptcha manager failed')
+    alertStore.setMessage({
+      message: 'reCAPTCHA 인증에 실패했습니다. 다시 시도해주세요.',
+      type: AlertType.Error
+    })
+    isLoading.value = false
+    return
+  }
+
 
   if (!token) {
     console.log('recaptcha failed')
     alertStore.setMessage({
       message: 'reCAPTCHA 인증에 실패했습니다. 다시 시도해주세요.',
-      type: AlertType.ERROR
+      type: AlertType.Error
     })
     isLoading.value = false
     return
@@ -147,7 +164,7 @@ const create = async () => {
     console.log('response is not comment response')
     alertStore.setMessage({
       message: '댓글 생성에 실패했습니다. 다시 시도해주세요.',
-      type: AlertType.ERROR
+      type: AlertType.Error
     })
     isLoading.value = false
     return

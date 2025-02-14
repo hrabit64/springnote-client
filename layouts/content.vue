@@ -1,18 +1,24 @@
 <template>
   <v-app class="main-font bg-success">
+    <MainAppBar />
+    <SideBar />
+
     <client-only>
-      <MainAppBar />
-      <SideBar />
       <ReplySidebar />
       <CommentSidebar />
     </client-only>
+
+    <client-only>
+      <LoginManager />
+    </client-only>
+
     <v-main>
-      <client-only>
-        <LoginManager />
-      </client-only>
 
       <slot></slot>
+      <MainFooter />
     </v-main>
+
+
     <client-only>
       <v-fab
         color="primary"
@@ -46,6 +52,8 @@
 <script setup lang="ts">
 import { useDisplay } from 'vuetify'
 import { useCommentSidebarStore } from '~/stores/comment-sidebar'
+import MainFooter from '~/components/MainFooter.vue'
+
 const commentSidebarStore = useCommentSidebarStore()
 const { mobile } = useDisplay()
 const goTop = () => {
@@ -54,9 +62,15 @@ const goTop = () => {
 </script>
 
 <style>
+
+.v-main {
+  padding-top: 64px;
+}
+
 .main-font {
   font-family: 'JetBrains Mono', 'D2Coding', monospace !important;
 }
+
 /* width */
 ::-webkit-scrollbar {
   width: 3px;
@@ -77,13 +91,6 @@ const goTop = () => {
   background: #555;
 }
 
-.no-transition {
-  transition: none !important;
-}
 
-.wrap-text {
-  white-space: normal !important;
-  word-wrap: break-word !important;
-}
 </style>
 <style scoped></style>

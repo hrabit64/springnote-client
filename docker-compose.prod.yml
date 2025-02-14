@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  springnote-client:
+    image: springnote-client-test:latest
+    container_name: springnote-client
+    networks:
+      - springnote_net
+    restart: always
+
+networks:
+  springnote_net:
+    external: true

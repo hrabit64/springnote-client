@@ -1,7 +1,8 @@
 <template>
-  <WindowCard w="100%" @close="goToHome">
+  <WindowCard w="100%" @close="goToHome" class="main-card">
     <template v-slot:title>
-      <v-icon>mdi-folder-file</v-icon> Series List
+      <v-icon>mdi-folder-multiple</v-icon>
+      Series List
     </template>
     <v-infinite-scroll
       :items="seriesList"
@@ -12,19 +13,20 @@
     >
       <v-table class="bg-transparent" width="100%" hover>
         <thead>
-          <tr></tr>
+        <tr></tr>
         </thead>
         <tbody>
-          <tr v-for="series in seriesList" :key="series.id">
-            <td @click.stop="goToSeries(series.id)" class="py-2">
-              <v-row class="d2Coding jetbrains-mono-bold text-body-2">
-                <v-col cols="1" class="text-right">
-                  <v-icon>mdi-folder</v-icon></v-col
-                >
-                <v-col cols="11"> {{ series.name }}</v-col>
-              </v-row>
-            </td>
-          </tr>
+        <tr v-for="series in seriesList" :key="series.id">
+          <td @click.stop="goToSeries(series.id)" class="py-2" style="cursor: pointer">
+            <v-row class="bold-font text-body-2">
+              <v-col cols="1" class="text-right">
+                <v-icon>mdi-folder</v-icon>
+              </v-col
+              >
+              <v-col cols="11"> {{ series.name }}</v-col>
+            </v-row>
+          </td>
+        </tr>
         </tbody>
       </v-table>
       <template v-slot:loading>
@@ -35,6 +37,7 @@
             elevation="0"
             width="100%"
             v-for="n in 3"
+            v-show="!isLast"
           >
             <v-skeleton-loader
               type="list-item-avatar"
@@ -45,7 +48,7 @@
         </v-col>
       </template>
 
-      <template v-slot:empty> </template>
+      <template v-slot:empty></template>
     </v-infinite-scroll>
     <client-only>
       <SeriesCreateDialog @create="refresh" v-if="isAdmin" />
@@ -53,14 +56,14 @@
   </WindowCard>
 </template>
 <script setup lang="ts">
-import type {
-  PageSeriesResponse,
-  SeriesResponse
-} from '~/types/series-response'
+import type { SeriesResponse } from '~/types/series-response'
 import { isPageSeriesResponse } from '~/types/series-response.d'
-import { getSeries, getSeriesWithName } from '~/api/series.api'
+import { getSeries } from '~/api/series.api'
 
 import { v4 } from 'uuid'
+import { useUserStore } from '~/stores/user'
+import { storeToRefs } from 'pinia'
+
 const key = ref(v4())
 
 const refresh = () => {
@@ -115,8 +118,6 @@ const goToHome = () => {
   router.push('/')
 }
 
-import { useUserStore } from '~/stores/user'
-import { storeToRefs } from 'pinia'
 const userStore = useUserStore()
 const { isAdmin } = storeToRefs(userStore)
 </script>
@@ -128,5 +129,9 @@ const { isAdmin } = storeToRefs(userStore)
 
 .dynamic-card {
   height: 75vh;
+}
+
+.main-card {
+  height: 85vh;
 }
 </style>

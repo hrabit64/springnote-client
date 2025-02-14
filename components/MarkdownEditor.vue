@@ -17,7 +17,8 @@
           <v-row>
             <v-col cols="12">
               <v-card-title class="text-center">
-                <v-icon>mdi-image-area</v-icon> 이미지 업로드 중...
+                <v-icon>mdi-image-area</v-icon>
+                이미지 업로드 중...
               </v-card-title>
             </v-col>
             <v-spacer></v-spacer>
@@ -55,7 +56,10 @@
       @split="closePreview"
       class="bg-success"
     >
-      <template v-slot:title> <v-icon>mdi-eye</v-icon> Preview </template>
+      <template v-slot:title>
+        <v-icon>mdi-eye</v-icon>
+        Preview
+      </template>
       <v-row justify="center">
         <v-col cols="12" md="10">
           <MarkdownRenderer :content="content" />
@@ -274,7 +278,8 @@
             <v-icon>mdi-window-maximize</v-icon>
           </v-btn>
           <p class="bold-font text-primary text-subtitle-1 mt-5 text-center">
-            <v-icon>mdi-eye</v-icon> Preview
+            <v-icon>mdi-eye</v-icon>
+            Preview
           </p>
 
           <v-card
@@ -294,6 +299,11 @@
 
 <script lang="ts" setup>
 import { useAlertStore } from '~/stores/alert'
+import { AlertType } from '~/types/components.d'
+import { postImage } from '~/api/image.api'
+import type { ImageRequest } from '~/types/image-request'
+import { isImageResponse } from '~/types/image-response.d'
+import MarkdownRenderer from './MarkdownRenderer.vue'
 
 const alertStore = useAlertStore()
 
@@ -305,8 +315,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue'])
-
-import { AlertType } from '~/types/components.d'
 
 const content = ref(props.modelValue)
 
@@ -366,12 +374,6 @@ const createTable = () => {
 
 // image upload
 const imgMenu = ref(false)
-import { postImage } from '~/api/image.api'
-import type { ImageRequest } from '~/types/image-request'
-import type { ImageResponse } from '~/types/image-response'
-import { isImageResponse } from '~/types/image-response.d'
-import MDC from '@nuxtjs/mdc/runtime/components/MDC.vue'
-import MarkdownRenderer from './MarkdownRenderer.vue'
 
 const isImgLoading = ref(false)
 const image = ref<File | null>(null)
@@ -398,7 +400,7 @@ const handleDrop = async (event: DragEvent) => {
   } else {
     alertStore.setMessage({
       message: '파일을 하나만 업로드해주세요.',
-      type: AlertType.ERROR
+      type: AlertType.Error
     })
   }
 }

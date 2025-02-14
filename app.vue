@@ -1,8 +1,6 @@
 <template>
   <NuxtLayout>
-    <v-app>
       <NuxtPage />
-    </v-app>
   </NuxtLayout>
 </template>
 <script setup lang="ts">
@@ -33,4 +31,8 @@ onMounted(() => {
 .v-application__wrap {
   min-height: 0vh !important;
 }
+</style>
+
+<style lang="postcss">
+@import '@/assets/css/fonts.css';
 </style>

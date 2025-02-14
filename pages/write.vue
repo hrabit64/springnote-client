@@ -135,7 +135,7 @@
               label="썸네일"
               readonly
               prepend-icon="mdi-image"
-              class="d2coding jetbrains-mono-regular"
+              class="regular-font"
             />
             <v-img
               v-if="thumbnail"

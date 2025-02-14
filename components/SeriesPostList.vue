@@ -4,13 +4,15 @@
     <v-col cols="12" md="4">
       <windowCard
         w="100%"
+   
         class="my-2"
         @close="goToSeriesList"
         @minus="goToSeriesList"
         @split="goToSeriesList"
       >
         <template v-slot:title>
-          <v-icon>mdi-information</v-icon> Series Info
+          <v-icon>mdi-information</v-icon>
+          Series Info
         </template>
         <v-row class="text-center">
           <v-col cols="12">
@@ -71,7 +73,8 @@
         @split="goToSeriesList"
       >
         <template v-slot:title>
-          <v-icon>mdi-file-document-multiple</v-icon> Post List
+          <v-icon>mdi-file-document-multiple</v-icon>
+          Post List
         </template>
         <v-infinite-scroll
           :items="postList"
@@ -83,17 +86,17 @@
         >
           <v-table class="bg-transparent pa-1" width="100%" hover>
             <thead>
-              <tr></tr>
+            <tr></tr>
             </thead>
             <tbody>
-              <tr v-for="(post, index) in postList" :key="post.id">
-                <td @click.on="goToPost(post.id)">
-                  <p class="bold-font text-body-2">
-                    <v-icon class="mx-1">mdi-file-document</v-icon>
-                    {{ total - index - 1 }}. {{ post.title }}
-                  </p>
-                </td>
-              </tr>
+            <tr v-for="(post, index) in postList" :key="post.id">
+              <td @click.on="goToPost(post.id)" style="cursor: pointer">
+                <p class="bold-font text-body-2">
+                  <v-icon class="mx-1">mdi-file-document</v-icon>
+                  {{ total - index - 1 }}. {{ post.title }}
+                </p>
+              </td>
+            </tr>
             </tbody>
           </v-table>
 
@@ -103,6 +106,7 @@
                 class="mx-auto my-2 bg-transparent"
                 color="success"
                 elevation="0"
+                v-show="!isLast"
                 width="100%"
                 v-for="n in 3"
               >
@@ -114,13 +118,16 @@
               </v-card>
             </v-col>
           </template>
-          <template v-slot:empty> </template>
+          <template v-slot:empty></template>
         </v-infinite-scroll>
         <v-col cols="12" v-if="isNoContent">
           <v-card class="mx-auto" elevation="0">
             <v-card-text class="text-center bold-font text-subtitle-1"
-              ><v-icon class="mr-2">mdi-alert-circle</v-icon>해당 시리즈에
-              포스트가 없습니다.</v-card-text
+            >
+              <v-icon class="mr-2">mdi-alert-circle</v-icon>
+              해당 시리즈에
+              포스트가 없습니다.
+            </v-card-text
             >
           </v-card>
           <v-divider class="my-2"></v-divider>
@@ -129,25 +136,24 @@
     </v-col>
   </v-row>
 
-  <v-card color="transparent" elevation="0" width="100%"> </v-card>
+  <v-card color="transparent" elevation="0" width="100%"></v-card>
 </template>
 <script setup lang="ts">
 import type { SeriesResponse } from '~/types/series-response'
+import type { PostSimpleResponse } from '~/types/post-response'
+
+import { isPagePostSimpleResponse } from '~/types/post-response.d'
+
+import { getSeriesPosts } from '~/api/post.api'
+import { useDisplay } from 'vuetify'
+import { useUserStore } from '~/stores/user'
+import { storeToRefs } from 'pinia'
 
 const props = defineProps<{
   series: SeriesResponse
 }>()
 
 const targetSeries = reactive(props.series)
-
-import type {
-  PagePostSimpleResponse,
-  PostSimpleResponse
-} from '~/types/post-response'
-
-import { isPagePostSimpleResponse } from '~/types/post-response.d'
-
-import { getSeriesPosts } from '~/api/post.api'
 
 const postList = ref<PostSimpleResponse[]>([])
 let page = 0
@@ -196,7 +202,7 @@ const goToPost = (id: number) => {
 const goToSeriesList = () => {
   router.push('/series-list')
 }
-import { useDisplay } from 'vuetify'
+
 const { mobile } = useDisplay()
 
 const scrollCard = reactive({
@@ -207,8 +213,6 @@ watch(mobile, () => {
   scrollCard.height = mobile.value ? '25vh' : '75vh'
 })
 
-import { useUserStore } from '~/stores/user'
-import { storeToRefs } from 'pinia'
 const userStore = useUserStore()
 const { isAdmin } = storeToRefs(userStore)
 

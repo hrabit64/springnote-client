@@ -3,16 +3,28 @@ import { md3 } from 'vuetify/blueprints'
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-19',
   devtools: { enabled: false },
+  routeRules: {
+    '/': { swr: true },
+    '/posts/:id': { swr: true },
+    '/post-list': { swr: true },
+    '/series-list': { swr: true },
+    '/series/:id': { swr: true },
+    '/term': { swr: true },
+    '/privacy-policy': { swr: true }
+  },
   modules: [
     '@vueuse/motion/nuxt',
     '@pinia/nuxt',
     'nuxt-vuefire',
     'vuetify-nuxt-module',
-    '@nuxtjs/mdc',
     '@vueuse/nuxt',
-    '@vueuse/motion/nuxt'
+    '@vueuse/motion/nuxt',
+    '@nuxt/image'
   ],
 
+  nitro: {
+    compressPublicAssets: true
+  },
   vite: {
     define: {
       'process.env.DEBUG': false
@@ -20,7 +32,7 @@ export default defineNuxtConfig({
   },
   build: {
     transpile: ['vuetify'],
-    // 최적화된 빌드를 위해 추가 설정
+
     extractCSS: true,
     optimization: {
       splitChunks: {
@@ -29,17 +41,12 @@ export default defineNuxtConfig({
         commons: true
       }
     },
-    // 추가 설정
-    extend(config, { isDev, isClient }) {
-      if (!isDev && isClient) {
-        config.optimization.minimizer = [
-          // JavaScript 최적화 (예: Terser)
-          new TerserPlugin(),
-          // CSS 최적화 (예: CSSMinimizer)
-          new CssMinimizerPlugin()
-        ]
+    terser: {
+      compress: {
+        drop_console: true // 콘솔 로그 제거
       }
     }
+
   },
 
   // ssr 모드이지만, 서버사이드에서는 인증이 필요 없으므로, 오직 클라이언트 모듈만 사용한다.
@@ -52,25 +59,41 @@ export default defineNuxtConfig({
       )
     }
   },
+
   components: true,
   plugins: [
     { src: '~/plugins/analytics.client', mode: 'client' },
-    { src: '~/plugins/vue-recaptcha-v3.client', mode: 'client' }
+    '~/plugins/ssr-client-hints'
   ],
 
   app: {
     head: {
-      title: 'springnote.blog'
+      title: 'springnote.blog',
+      link: [
+        // preconnect 설정
+        { rel: 'preconnect', href: 'https://www.google.com' },
+        { rel: 'preconnect', href: 'https://firebase.googleapis.com' },
+        // dns-prefetch 설정
+        { rel: 'dns-prefetch', href: 'https://www.google.com' },
+        { rel: 'dns-prefetch', href: 'https://firebase.googleapis.com' }
+      ],
+      meta: [
+        {
+          name: 'springnote.blog',
+          description: 'springnote.blog 는 백엔드 관련 기술을 주로 다루는 개발 블로그입니다.',
+          'og:title': 'springnote.blog',
+          'og:description': 'springnote.blog 는 백엔드 관련 기술을 주로 다루는 개발 블로그입니다.',
+          'og:type': 'article',
+          'og:site_name': 'springnote.blog',
+          'og:locale': 'ko_KR'
+        }
+      ]
     }
   },
 
   ssr: true,
 
-  css: [
-    '@/assets/css/fonts.css',
-    '@/assets/css/global.css',
-    'highlight.js/styles/stackoverflow-dark.css'
-  ],
+  css: [],
 
   pinia: {
     storesDirs: ['./stores/**']
@@ -92,14 +115,36 @@ export default defineNuxtConfig({
   features: {
     inlineStyles: false
   },
+
   vuetify: {
-    ssr: true,
-    defaultAssets: { font: false, icons: true },
+    moduleOptions: {
+      ssrClientHints: {
+        viewportSize: true,
+        prefersColorScheme: true,
+        prefersReducedMotion: true,
+        reloadOnFirstRequest: false
+      },
+      defaultAssets: {
+        font: false,   // 기본 폰트(예: Roboto) 제거
+        icons: false   // 기본 아이콘 폰트 자동 로드를 제거
+      }
+    },
+
+
+    defaultAssets: {
+      font: false,   // 기본 폰트(예: Roboto) 제거
+      icons: false   // 기본 아이콘 폰트 자동 로드를 제거
+    },
     treeShake: true,
-    moduleOptions: {},
+
     vuetifyOptions: {
-      defaultAssets: { font: false, icons: true },
+
+      iconfont: 'mdiSvg',
       blueprint: md3,
+      defaultAssets: {
+        font: false,   // 기본 폰트(예: Roboto) 제거
+        icons: false   // 기본 아이콘 폰트 자동 로드를 제거
+      },
       theme: {
         defaultTheme: 'darkSpringTheme',
         themes: {
@@ -120,73 +165,22 @@ export default defineNuxtConfig({
     }
   },
 
-  mdc: {
-    highlight: {
-      langs: [
-        'c#',
-        'md',
-        'diff',
-        'java',
-        'js',
-        'mermaid',
-        'go',
-        'python',
-        'shell',
-        'sql',
-        'yaml',
-        'json',
-        'xml',
-        'html',
-        'css',
-        'php',
-        'ruby',
-        'rust',
-        'typescript',
-        'dart',
-        'kotlin',
-        'swift',
-        'scala',
-        'groovy',
-        'perl',
-        'lua',
-        'r',
-        'haskell',
-        'clojure',
-        'elixir',
-        'lisp',
-        'scheme',
-        'ocaml',
-        'fsharp'
-      ],
-      theme: 'material-theme-darker'
+  image: {
+    inject: true,
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536
     },
-    components: {
-      prose: true,
-      map: {
-        // p: 'MarkdownP',
-        h1: 'MarkdownH1',
-        h2: 'MarkdownH2',
-        h3: 'MarkdownH3',
-        h4: 'MarkdownH4',
-        h5: 'MarkdownH5',
-        h6: 'MarkdownH6',
-        ul: 'MarkdownUl',
-        // ol: 'MarkdownOl',
-        // li: 'MarkdownLi',
-        blockquote: 'MarkdownBlockquote',
-        hr: 'MarkdownHr',
-        pre: 'MarkdownPre',
-        code: 'MarkdownCode',
-        table: 'MarkdownTable',
-        thead: 'MarkdownThead',
-        tbody: 'MarkdownTbody',
-        tr: 'MarkdownTr',
-        th: 'MarkdownTh',
-        td: 'MarkdownTd',
-        a: 'MarkdownA',
-        img: 'MarkdownImg',
-        em: 'MarkdownEm',
-        strong: 'MarkdownStrong'
+    presets: {
+      default: {
+        modifiers: {
+          format: 'webp',
+          quality: 80
+        }
       }
     }
   },
@@ -195,26 +189,7 @@ export default defineNuxtConfig({
     public: {
       siteKey: process.env.RECAPTCHA_SITE_KEY,
       baseUrl: process.env.BASE_URL || 'http://localhost:3000',
-      baseImgUrl: process.env.BASE_IMG_URL || 'http://localhost:3000',
-      motion: {
-        directives: {
-          shake: {
-            initial: {
-              y: 0,
-              x: 0
-            },
-            enter: {
-              y: 8,
-              x: 8,
-              transition: {
-                duration: 1000,
-                repeat: Infinity,
-                repeatType: 'reverse'
-              }
-            }
-          }
-        }
-      }
+      baseImgUrl: process.env.BASE_IMG_URL || 'http://localhost:3000'
     }
   }
 })

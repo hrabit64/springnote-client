@@ -1,0 +1,66 @@
+name: Client Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # 사용할 Node.js 버전 지정
+
+      - name: setup tmp dir
+        run: mkdir -p tmp
+
+      - name: get secrets
+        uses: actions/checkout@v3
+        with:
+          repository: hrabit64/springnote-breezenote-secret
+          ref: main
+          path: "tmp"
+          token: ${{ secrets.TOKEN }}
+
+      - name: move env
+        run: mv tmp/.env .env
+
+      - name: remove tmp dir
+        run: rm -rf tmp
+
+      # 현재 소스코드를 압축하여 파일로 만들어서 서버로 전송
+      - name: Archive production artifacts
+        run: tar -czvf client.tar.gz ./
+
+      - name: Push File to Server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          port: ${{ secrets.PORT }}
+          source: client.tar.gz
+          target: /home/springbot/client
+
+      - name: Run Deploy Script
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /home/springbot/client
+            tar -xzvf client.tar.gz  
+            rm -rf client.tar.gz
+            docker build -t springnote-client .  
+            docker compose -f docker-compose.prod.yml up -d
+            

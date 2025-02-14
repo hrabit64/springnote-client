@@ -7,7 +7,10 @@
         @minus="closeRemoveDialog"
         @split="closeRemoveDialog"
       >
-        <template v-slot:title> <v-icon>mdi-check</v-icon> 삭제 확인 </template>
+        <template v-slot:title>
+          <v-icon>mdi-check</v-icon>
+          삭제 확인
+        </template>
 
         <v-row class="mb-0 pa-0 ma-4" justify="center" align="center">
           <v-col cols="12" class="mt-2 mb-0">
@@ -17,7 +20,8 @@
           </v-col>
           <v-col cols="6" class="text-center">
             <v-btn color="error" class="bold-font" block @click.stop="remove"
-              >삭제</v-btn
+            >삭제
+            </v-btn
             >
           </v-col>
           <v-col cols="6" class="text-center">
@@ -26,7 +30,8 @@
               @click.stop="closeRemoveDialog"
               class="bold-font"
               block
-              >취소</v-btn
+            >취소
+            </v-btn
             >
           </v-col>
 
@@ -49,92 +54,93 @@
   >
     <v-table class="bg-transparent" width="100%" hover>
       <thead>
-        <tr></tr>
+      <tr></tr>
       </thead>
       <tbody>
-        <tr v-for="tag in tagList" :key="tag.id">
-          <td class="py-2">
-            <v-row class="d2Coding jetbrains-mono-bold text-body-2">
-              <v-col
-                cols="10"
-                v-if="editTagId !== tag.id"
-                @click.stop="select(tag)"
+      <tr v-for="tag in tagList" :key="tag.id">
+        <td class="py-2">
+          <v-row class="bold-font text-body-2">
+            <v-col
+              cols="10"
+              v-if="editTagId !== tag.id"
+              @click.stop="select(tag)"
+            >
+              {{ tag.name }}
+            </v-col
+            >
+            <v-col cols="10" v-if="editTagId === tag.id">
+              <v-text-field
+                clearable
+                variant="outlined"
+                class="regular-font"
+                hint="최대 100자"
+                counter="100"
+                label="태그 수정"
+                v-model="editTag"
+                :rules="[rules.required, rules.min, rules.max]"
               >
-                {{ tag.name }}</v-col
+              </v-text-field>
+              <v-btn
+                color="primary"
+                small
+                icon
+                density="compact"
+                block
+                @click.stop="update"
               >
-              <v-col cols="10" v-if="editTagId === tag.id">
-                <v-text-field
-                  clearable
-                  variant="outlined"
-                  class="d2coding jetbrains-mono-regular"
-                  hint="최대 100자"
-                  counter="100"
-                  label="태그 수정"
-                  v-model="editTag"
-                  :rules="[rules.required, rules.min, rules.max]"
-                >
-                </v-text-field>
-                <v-btn
-                  color="primary"
-                  small
-                  icon
-                  density="compact"
-                  block
-                  @click.stop="update"
-                >
-                  <v-icon>mdi-check</v-icon>
-                </v-btn>
-              </v-col>
-              <v-col cols="1">
-                <v-btn
-                  color="red"
-                  small
-                  icon
-                  density="compact"
-                  @click="openRemoveDialog(tag.id)"
-                >
-                  <v-icon>mdi-minus</v-icon>
-                </v-btn>
-              </v-col>
-              <v-col cols="1" v-if="editTagId !== tag.id">
-                <v-btn
-                  color="primary"
-                  small
-                  icon
-                  density="compact"
-                  @click="openEdit(tag.id, tag.name)"
-                >
-                  <v-icon>mdi-cog</v-icon>
-                </v-btn>
-              </v-col>
-              <v-col cols="1" v-if="editTagId === tag.id">
-                <v-btn
-                  color="gray"
-                  small
-                  icon
-                  density="compact"
-                  @click="openEdit(tag.id, tag.name)"
-                >
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-              </v-col>
-              <v-col
-                cols="12"
-                class="mx-auto text-center"
-                v-if="isLoading && editTagId === tag.id"
+                <v-icon>mdi-check</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col cols="1">
+              <v-btn
+                color="red"
+                small
+                icon
+                density="compact"
+                @click="openRemoveDialog(tag.id)"
               >
-                <v-progress-circular
-                  color="primary"
-                  indeterminate
-                ></v-progress-circular>
-              </v-col>
-            </v-row>
-          </td>
-        </tr>
+                <v-icon>mdi-minus</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col cols="1" v-if="editTagId !== tag.id">
+              <v-btn
+                color="primary"
+                small
+                icon
+                density="compact"
+                @click="openEdit(tag.id, tag.name)"
+              >
+                <v-icon>mdi-cog</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col cols="1" v-if="editTagId === tag.id">
+              <v-btn
+                color="gray"
+                small
+                icon
+                density="compact"
+                @click="openEdit(tag.id, tag.name)"
+              >
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col
+              cols="12"
+              class="mx-auto text-center"
+              v-if="isLoading && editTagId === tag.id"
+            >
+              <v-progress-circular
+                color="primary"
+                indeterminate
+              ></v-progress-circular>
+            </v-col>
+          </v-row>
+        </td>
+      </tr>
       </tbody>
     </v-table>
     <template v-slot:loading>
-      <v-col cols="12" md="12" class="text-center">
+      <v-col cols="12" md="12" class="text-center" v-show="!isLast">
         <v-card
           class="mx-auto my-2 bg-transparent"
           color="success"
@@ -151,15 +157,19 @@
       </v-col>
     </template>
 
-    <template v-slot:empty> </template>
+    <template v-slot:empty></template>
   </v-infinite-scroll>
 </template>
 <script setup lang="ts">
 import type { TagResponse } from '~/types/tag-response'
-import { isPagedTagResponse } from '~/types/tag-response.d'
-import { getTags } from '~/api/tag.api'
+import { isPagedTagResponse, isTagResponse } from '~/types/tag-response.d'
+import { deleteTag, getTags, updateTag } from '~/api/tag.api'
 
 import { v4 } from 'uuid'
+import type { KeyVal } from '~/types/components'
+import { useAlertStore } from '~/stores/alert'
+import { AlertType } from '~/types/components.d'
+
 const key = ref(v4())
 
 const tagList = ref<TagResponse[]>([])
@@ -203,8 +213,6 @@ async function load({ done }) {
 
 const router = useRouter()
 
-import type { KeyVal } from '~/types/components'
-
 const emit = defineEmits(['select'])
 
 const select = (tag: TagResponse) => {
@@ -218,11 +226,8 @@ const rules = reactive({
   min: v => (v && v.length >= 2) || '2자 이상 입력해주세요',
   max: v => (v && v.length <= 100) || '최대 100자 까지 가능합니다.'
 })
-import { useAlertStore } from '~/stores/alert'
 
 const alertStore = useAlertStore()
-
-import { AlertType } from '~/types/components.d'
 
 const editTagId = ref(-1)
 const editTag = ref('')
@@ -235,8 +240,7 @@ const openEdit = (tagId: number, tagName: string) => {
     editTag.value = tagName
   }
 }
-import { updateTag } from '~/api/tag.api'
-import { isTagResponse } from '~/types/tag-response.d'
+
 const update = async () => {
   isLoading.value = true
   const res = await updateTag(editTagId.value, { name: editTag.value })
@@ -272,7 +276,6 @@ const closeRemoveDialog = () => {
   removeTarget.value = -1
 }
 
-import { deleteTag } from '~/api/tag.api'
 const remove = async () => {
   isLoading.value = true
   const res = await deleteTag(removeTarget.value)

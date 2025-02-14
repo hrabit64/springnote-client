@@ -7,7 +7,6 @@ import {
 export default defineNuxtPlugin(async () => {
   const firebaseApp = useFirebaseApp()
 
-  console.log('Loading analytics')
 
   let analytics: Analytics | null = null
   if (await isSupported()) {

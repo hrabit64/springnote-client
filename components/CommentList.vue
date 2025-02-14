@@ -23,7 +23,7 @@
         </v-item-group>
 
         <template v-slot:loading>
-          <v-col cols="12" class="mx-auto text-center">
+          <v-col cols="12" class="mx-auto text-center" v-show="!isLast">
             <v-card
               class="mx-auto my-2"
               color="success"
@@ -48,14 +48,17 @@
             </v-card>
           </v-col>
         </template>
-        <template v-slot:empty> </template>
+        <template v-slot:empty></template>
       </v-infinite-scroll>
     </v-col>
     <v-col cols="12" v-if="isNoContent">
       <v-card class="mx-auto" elevation="0">
         <v-card-text class="text-center bold-font text-subtitle-1"
-          ><v-icon class="mr-2">mdi-alert-circle</v-icon>댓글이
-          없습니다.</v-card-text
+        >
+          <v-icon class="mr-2">mdi-alert-circle</v-icon>
+          댓글이
+          없습니다.
+        </v-card-text
         >
       </v-card>
       <v-divider class="my-2"></v-divider>
@@ -77,10 +80,13 @@ const props = defineProps({
 })
 
 import { v4 } from 'uuid'
-const id = ref(v4())
 import { type CommentResponse } from '~/types/comment-response'
 import { IsPageCommentsResponse } from '~/types/comment-response.d'
 import { getCommentsByPostId } from '~/api/comment.api'
+import { useUserStore } from '~/stores/user'
+import { useDisplay } from 'vuetify'
+
+const id = ref(v4())
 
 const comments = ref<CommentResponse[]>([])
 let page = 0
@@ -104,6 +110,7 @@ const getComments = async () => {
     isNoContent.value = true
   }
 }
+
 async function load({ done }) {
   if (isLast) {
     done('empty')
@@ -121,18 +128,16 @@ const refresh = () => {
   id.value = v4()
 }
 
-import { useUserStore } from '~/stores/user'
-
 const userStore = useUserStore()
 const { name } = storeToRefs(userStore)
-import { useDisplay } from 'vuetify'
+
 const { mobile } = useDisplay()
 
 const calListHeight = () => {
   if (mobile.value) {
-    return name.value === '' ? '65vh' : '50vh'
+    return name.value === '' ? '55vh' : '60vh'
   }
-  return name.value === '' ? '74vh' : '68vh'
+  return name.value === '' ? '70vh' : '70vh'
 }
 const commentList = reactive({
   height: calListHeight()

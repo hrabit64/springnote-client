@@ -4,7 +4,8 @@
       <v-col cols="12">
         <WindowCard w="100%">
           <template v-slot:title>
-            <v-icon>mdi-human-greeting-variant</v-icon> Hello, Springnote.blog!
+            <v-icon>mdi-human-greeting</v-icon>
+            Hello, Springnote.blog!
           </template>
           <v-row class="pa-5" justify="center" align="center">
             <v-col cols="12" class="justify-center align-center">
@@ -13,12 +14,12 @@
                 variant="outlined"
                 class="pa-5 justify-center align-center"
                 width="100%"
-                style="height: 80vh"
+                style="height: 100vh"
               >
                 <v-card-title class="justify-center align-center">
                   <p class="text-md-h2 text-h3 bold-font text-center">
-                    <v-icon class="mr-1">mdi-human-greeting-variant</v-icon
-                    >Hello
+
+                    Hello
                   </p>
                   <p
                     class="text-md-h3 text-h5 text-primary bold-font mb-5 text-white wrap-text text-center"
@@ -47,27 +48,40 @@
                   >
                     <v-col cols="12" md="4">
                       <v-btn
-                        class="bold-font"
+                        class="bold-font px-2"
                         variant="outlined"
                         block
                         @click.stop="goTo('/series-list')"
-                        ><v-icon class="mr-1">mdi-folder-file</v-icon>전체
-                        시리즈 보기<v-icon class="ml-2"
-                          >mdi-arrow-right</v-icon
-                        ></v-btn
-                      ></v-col
+                      >
+                        <v-icon class="mr-1">mdi-folder-multiple</v-icon>
+                        전체
+                        시리즈 보기
+                        <v-icon class="ml-2"
+                        >mdi-arrow-right
+                        </v-icon
+                        >
+                      </v-btn
+                      >
+                    </v-col
                     >
                     <v-col cols="12" md="4">
                       <v-btn
-                        class="bold-font"
+                        class="bold-font px-2"
                         variant="outlined"
                         block
                         @click.stop="goTo('/post-list')"
-                        ><v-icon class="mr-1">mdi-file-document-multiple</v-icon
-                        >전체 포스트 보기<v-icon class="ml-2"
-                          >mdi-arrow-right</v-icon
-                        ></v-btn
-                      ></v-col
+                      >
+                        <v-icon class="mr-1">mdi-file-document-multiple
+                        </v-icon
+                        >
+                        전체 포스트 보기
+                        <v-icon class="ml-2"
+                        >mdi-arrow-right
+                        </v-icon
+                        >
+                      </v-btn
+                      >
+                    </v-col
                     >
 
                     <v-col cols="12" justify="center" align="center">
@@ -92,6 +106,7 @@
                           src="@/public/images/flying-bird.webp"
                           class="text-center"
                           max-width="300"
+                          transition="false"
                         ></v-img>
                       </div>
                     </v-col>
@@ -99,42 +114,6 @@
                 </v-card-actions>
               </v-card>
             </v-col>
-
-            <!-- <v-col cols="12">
-              <v-card
-                color="primary"
-                variant="outlined"
-                class="pa-5"
-                width="100%"
-              >
-                <p
-                  class="text-h5 bold-font mb-5 wrap-text text-white text-center"
-                >
-                  <v-icon>mdi-history</v-icon>최신 포스트
-                </p>
-                <client-only>
-                  <v-window
-                    v-model="window"
-                    :show-arrows="!mobile"
-                    touch
-                    style="height: 40vh"
-                  >
-                    <v-window-item
-                      v-for="(post, index) in recentPosts"
-                      :key="index"
-                    >
-                      <PostCard :post="post"> </PostCard>
-                    </v-window-item>
-                  </v-window>
-                  <p
-                    class="text-h5 bold-font wrap-text text-center"
-                    v-if="mobile"
-                  >
-                    <v-icon>mdi-arrow-left-right</v-icon>
-                  </p>
-                </client-only>
-              </v-card>
-            </v-col> -->
           </v-row>
         </WindowCard>
       </v-col>
@@ -176,21 +155,8 @@ const goTo = (path: string) => {
   router.push(`${path}`)
 }
 
-// import type { PostSimpleResponse } from '~/types/post-response'
-// import { getRecentPosts } from '~/api/post.api'
-// import { isPagePostSimpleResponse } from '~/types/post-response.d'
-// const recentPosts = ref<PostSimpleResponse[]>([])
-
-// onMounted(async () => {
-//   getRecentPosts(5).then(result => {
-//     if (isPagePostSimpleResponse(result)) {
-//       recentPosts.value = result._embedded.posts
-//     }
-//   })
-// })
-
-const window = ref(0)
 import { useDisplay } from 'vuetify'
+
 const { mobile } = useDisplay()
 </script>
 

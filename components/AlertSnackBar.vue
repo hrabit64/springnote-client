@@ -3,7 +3,7 @@
     v-model="snackbar"
     :timeout="timeout"
     multi-line
-    color="success"
+    color="primary"
     rounded="pill"
   >
     <p class="text-center bold-font text-subtitle-2">
@@ -14,8 +14,10 @@
     </p>
 
     <template v-slot:actions>
-      <v-btn variant="text" @click="snackbar = false" class="mx-2"
-        ><v-icon>mdi-close-circle</v-icon></v-btn
+      <v-btn variant="text" @click="snackbar = false" class="mx-2 text-white"
+      >
+        <v-icon>mdi-close-circle</v-icon>
+      </v-btn
       >
     </template>
   </v-snackbar>
@@ -23,14 +25,13 @@
 
 <script setup lang="ts">
 import { AlertType } from '~/types/components.d'
+import { useAlertStore } from '~/stores/alert'
 
 const timeout = ref(5000)
 const snackbar = ref(false)
 const text = ref('')
 const type = ref<AlertType>(AlertType.Info)
 let lastId = null
-
-import { useAlertStore } from '~/stores/alert'
 
 const alertStore = useAlertStore()
 const { id, message } = storeToRefs(alertStore)

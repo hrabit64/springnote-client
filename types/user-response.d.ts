@@ -4,7 +4,8 @@ export const UserResponseSchema = z.object({
   uid: z.string(),
   display_name: z.string(),
   admin: z.boolean(),
-  profile_img: z.string()
+  profile_img: z.string(),
+  enabled: z.boolean()
 })
 
 export type UserResponse = z.infer<typeof UserResponseSchema>

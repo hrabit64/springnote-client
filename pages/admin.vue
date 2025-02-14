@@ -38,7 +38,8 @@
       <v-row justify="center" align="center" class="mx-5">
         <v-col cols="12" class="text-center">
           <h1 class="text-h3 bold-font">
-            <v-icon>mdi-alert</v-icon>This Is Admin Page
+            <v-icon>mdi-alert</v-icon>
+            This Is Admin Page
           </h1>
           <h3 class="text-h5 bold-font">
             If you don't have any permission, this page not working.
@@ -47,7 +48,7 @@
         <v-col cols="12" md="6" class="text-center">
           <v-card
             class="bold-font text-h2"
-            prepend-icon="mdi-note-edit"
+            prepend-icon="mdi-note"
             subtitle="신규 포스트를 작성합니다."
             hover
             title="게시글 작성"

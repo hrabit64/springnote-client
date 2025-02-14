@@ -2,12 +2,12 @@
   <v-card :width="w" elevation="0" height="100%">
     <v-card-title class="text-right py-0 my-0">
       <v-row>
-        <v-col cols="6">
-          <p class="py-2 text-left bold-font text-body-2 text-primary">
+        <v-col cols="8">
+          <p class="py-2 text-left bold-font text-body-2 text-primary title-overflow">
             <slot name="title">{{ title }}</slot>
           </p>
         </v-col>
-        <v-col cols="6">
+        <v-col cols="4">
           <v-btn
             class="mx-2"
             icon="mdi-minus"
@@ -44,8 +44,17 @@
 
 <script lang="ts" setup>
 const props = defineProps<{
-  w: string
+  w: string,
+
+  //not required
+  noBackground?: boolean,
 }>()
+
+const cardStyle = computed(() => {
+  return {
+    backgroundColor: props.noBackground ? 'transparent' : 'white'
+  }
+})
 
 const emit = defineEmits(['close', 'minus', 'split'])
 
@@ -62,4 +71,12 @@ const split = () => {
 }
 </script>
 
-<style></style>
+<style>
+/* overflow text ellipsis */
+.title-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+</style>

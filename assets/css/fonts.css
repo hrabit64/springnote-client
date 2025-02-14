@@ -45,38 +45,21 @@
   font-variant-ligatures: none;
 }
 
-.d2coding {
-  font-family: 'D2Coding', monospace;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.jetbrains-mono-regular {
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.jetbrains-mono-italic {
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 400;
-  font-style: italic;
-}
-
-.jetbrains-mono-bold {
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 700;
-  font-style: normal;
-}
-
 .body {
   font-family: 'JetBrains Mono', 'D2Coding', monospace !important;
 }
+
 
 .bold-font {
   font-family: 'JetBrains Mono', 'D2Coding', monospace !important;
   font-weight: 700 !important;
   font-style: normal !important;
+}
+
+.italic-font {
+  font-family: 'JetBrains Mono', 'D2Coding', monospace !important;
+  font-weight: 400 !important;
+  font-style: italic !important;
 }
 
 .regular-font {
@@ -85,16 +68,5 @@
   font-style: normal !important;
 }
 
-.i-text-body-2 {
-  font-size: 0.875rem !important;
-  font-weight: 500 !important;
-  line-height: 1.425 !important;
-  letter-spacing: 0.0178571429em !important;
-}
 
-.i-text-body-2 {
-  font-size: 0.8rem !important;
-  font-weight: 400 !important;
-  line-height: 1.425 !important;
-  letter-spacing: 0.0178571429em !important;
-}
+
