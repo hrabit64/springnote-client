@@ -1,7 +1,7 @@
 <template>
-  <v-container class="d-flex justify-center align-center" width="100%">
-    <v-row justify="center" align="center" class="mx-1">
-      <v-col cols="12" class="pa-0 ma-0">
+  <v-container width="100%">
+    <v-row justify="center" align="center">
+      <v-col cols="12" md="10">
         <SeriesPostList :series="series" />
       </v-col>
     </v-row>

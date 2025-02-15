@@ -4,9 +4,9 @@
     color="success"
 
   >
-    <v-row class="mt-5">
+    <v-row>
       <v-col
-        class="text-center text-caption pt-2 mt-5"
+        class="text-center text-caption pt-2 "
         cols="12"
       >
         <v-spacer></v-spacer>

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 
 export const useSidebarStore = defineStore('sidebar', () => {
-  const open = ref(true)
+  const open = ref(false)
 
   const toggle = () => {
     open.value = !open.value

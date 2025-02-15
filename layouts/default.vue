@@ -2,34 +2,37 @@
   <v-app class="main-font bg-success">
     <MainAppBar />
     <SideBar />
-    <client-only>
-      <LoginManager />
-    </client-only>
-    <v-main>
 
+
+    <v-main style="padding-top: 64px;">
       <slot></slot>
+
       <MainFooter />
     </v-main>
 
-  </v-app>
 
+  </v-app>
   <client-only>
     <AlertSnackBar />
   </client-only>
 
+  <client-only>
+    <LoginManager />
+  </client-only>
 </template>
 <script setup lang="ts">
 import MainFooter from '~/components/MainFooter.vue'
 </script>
 
 <style>
-.v-main {
-  padding-top: 64px;
-}
 
+.v-main {
+
+}
 
 .main-font {
   font-family: 'JetBrains Mono', 'D2Coding', monospace !important;
+  color: #E0E0E0;
 }
 
 /* width */

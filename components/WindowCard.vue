@@ -1,6 +1,7 @@
 <template>
-  <v-card :width="w" elevation="0" height="100%">
-    <v-card-title class="text-right py-0 my-0">
+  <!--  need border-->
+  <v-card :width="w" elevation="0" height="100%" variant="outlined" class="content-card bg-success">
+    <v-card-title class="text-right py-0 my-0 bg-accent">
       <v-row>
         <v-col cols="8">
           <p class="py-2 text-left bold-font text-body-2 text-primary title-overflow">
@@ -36,9 +37,13 @@
           ></v-btn>
         </v-col>
       </v-row>
+
     </v-card-title>
     <v-divider></v-divider>
+
     <slot></slot>
+
+
   </v-card>
 </template>
 
@@ -48,6 +53,8 @@ const props = defineProps<{
 
   //not required
   noBackground?: boolean,
+
+  cardType?: string,
 }>()
 
 const cardStyle = computed(() => {
@@ -77,6 +84,12 @@ const split = () => {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+
+.content-card {
+
+  border: 2px solid #1E1E1E !important;
 }
 
 </style>

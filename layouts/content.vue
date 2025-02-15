@@ -40,9 +40,11 @@
         slim
         layout
         app
-        v-if="mobile"
         @click.stop="goTop"
+
       ></v-fab>
+
+
     </client-only>
   </v-app>
   <client-only>
@@ -52,9 +54,10 @@
 <script setup lang="ts">
 import { useDisplay } from 'vuetify'
 import { useCommentSidebarStore } from '~/stores/comment-sidebar'
-import MainFooter from '~/components/MainFooter.vue'
+
 
 const commentSidebarStore = useCommentSidebarStore()
+
 const { mobile } = useDisplay()
 const goTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -69,6 +72,7 @@ const goTop = () => {
 
 .main-font {
   font-family: 'JetBrains Mono', 'D2Coding', monospace !important;
+  color: #E0E0E0;
 }
 
 /* width */

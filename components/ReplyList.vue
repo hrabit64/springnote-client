@@ -1,11 +1,11 @@
 <template>
   <CommentCard :comment="parentComment" :no_reply="true" />
-  <v-divider class="my-2" />
+  <v-divider class="mb-2" />
   <v-infinite-scroll
     :items="comments"
     :onLoad="load"
     width="100%"
-    :style="commentList"
+    height="50vh"
     v-if="!isNoContent"
     :key="id"
   >
@@ -46,7 +46,7 @@
     <template v-slot:empty></template>
   </v-infinite-scroll>
   <v-col cols="12" v-if="isNoContent">
-    <v-card class="mx-auto" elevation="0">
+    <v-card class="mx-auto" elevation="0" color="success">
       <v-card-text class="text-center bold-font text-subtitle-1"
       >
         <v-icon class="mr-2">mdi-alert-circle</v-icon>
@@ -59,9 +59,10 @@
   </v-col>
   <v-col cols="12">
     <ReplyCreateForm class="mx-2" v-if="name !== ''" @create="refresh" />
+    <LoginCard v-if="name === ''" />
   </v-col>
 
-  <LoginCard v-if="name === ''" />
+
 </template>
 <script setup lang="ts">
 import type { ReplyResponse } from '~/types/comment-response'

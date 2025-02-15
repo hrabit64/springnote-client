@@ -1,9 +1,5 @@
 <template>
-  <WindowCard w="100%">
-    <template v-slot:title>
-      <v-icon>mdi-folder-multiple-outline</v-icon>
-      Series List
-    </template>
+  <v-card>
     <v-infinite-scroll
       :items="seriesList"
       :onLoad="load"
@@ -49,7 +45,7 @@
 
       <template v-slot:empty></template>
     </v-infinite-scroll>
-  </WindowCard>
+  </v-card>
 </template>
 <script setup lang="ts">
 import type { SeriesResponse } from '~/types/series-response'

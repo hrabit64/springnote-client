@@ -1,5 +1,5 @@
 <template>
-  <v-card class="bg-transparent" width="100%" elevation="0">
+  <v-card class="bg-transparent" width="100%" elevation="0" style="z-index: 2000">
     <v-card-text>
       <v-row justify="center" align="center">
         <v-col cols="12">
@@ -10,7 +10,9 @@
 
         <v-col cols="12" class="text-center">
           <v-btn color="white" @click.stop="login"
-            ><v-icon class="mr-2">mdi-google</v-icon>Google
+          >
+            <v-icon class="mr-2">mdi-google</v-icon>
+            Google
           </v-btn>
         </v-col>
       </v-row>

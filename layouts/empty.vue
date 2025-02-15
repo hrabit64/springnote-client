@@ -1,9 +1,7 @@
 <template>
-  <v-layout class="rounded rounded-md px-0 main-font bg-success">
-    <v-main class="d-flex align-center justify-center bg-success">
-      <slot></slot>
-    </v-main>
-  </v-layout>
+
+  <slot></slot>
+
 </template>
 <script setup lang="ts"></script>
 
@@ -11,6 +9,7 @@
 .main-font {
   font-family: 'JetBrains Mono', 'D2Coding', monospace !important;
 }
+
 /* width */
 ::-webkit-scrollbar {
   width: 3px;

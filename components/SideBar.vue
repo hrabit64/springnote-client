@@ -1,21 +1,16 @@
 <template>
   <v-navigation-drawer
-    :transition="false"
-    class="text-left no-transition mr-2"
-    border="false"
-    :permanent="!mobile"
-    :temporary="mobile"
-    floating
+    style="transition: none"
     v-model="open"
     color="success"
-    :disable-resize-watcher="true"
-    :mobile-break-point="3000"
+    temporary
+    fixed
     app
   >
     <v-list weight="100%">
-      <v-list-subheader>FOLDERS</v-list-subheader>
+      <!--      <v-list-subheader>FOLDERS</v-list-subheader>-->
       <v-list-item
-        v-for="(item, i) in folderItems"
+        v-for="(item, i) in items"
         :key="i"
         :value="item"
         color="primary"
@@ -31,22 +26,6 @@
         ></v-list-item-title>
       </v-list-item>
 
-      <v-list-subheader>LINKS</v-list-subheader>
-      <v-list-item
-        v-for="(item, i) in linkItems"
-        :key="i"
-        :value="item"
-        color="primary"
-        @click.stop="goTo(item.link)"
-      >
-        <template v-slot:prepend>
-          <v-icon :icon="item.icon"></v-icon>
-        </template>
-        <v-list-item-title
-          v-text="item.title"
-
-        ></v-list-item-title>
-      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -61,17 +40,14 @@ interface SideBarItem {
   icon: string
 }
 
-const folderItems = ref<SideBarItem[]>([
+const items = ref<SideBarItem[]>([
   { title: 'Home', link: '/', icon: 'mdi-folder-home' },
   { title: 'Series', link: '/series-list', icon: 'mdi-folder-multiple' },
-  { title: 'Posts', link: '/post-list', icon: 'mdi-file-document-multiple' }
-  // { title: 'Projects', link: '/projects', icon: 'mdi-folder-table' },
-  // { title: 'About', link: '/junser-hwang', icon: 'mdi-folder-account' }
+  { title: 'Posts', link: '/post-list', icon: 'mdi-file-document-multiple' },
+  { title: 'Github', link: '/github', icon: 'mdi-github' }
+
 ])
 
-const linkItems = ref<SideBarItem[]>([
-  { title: 'Github', link: '/github', icon: 'mdi-github' }
-])
 
 const router = useRouter()
 const goTo = (link: string) => {
@@ -87,34 +63,19 @@ const { mobile } = useDisplay()
 const sidebarStore = useSidebarStore()
 const { open } = storeToRefs(sidebarStore)
 
-open.value = !mobile.value
 
-watch(mobile, () => {
-  open.value = !mobile.value
-})
 </script>
 
 <style scoped>
 
 
-.v-navigation-drawer {
-  transition: none !important;
-
-}
-
-.navigation-drawer-transition-duration {
-  transition-duration: 0s !important;
-}
-
-
-.v-fade-transition-enter-active,
-.v-fade-transition-leave-active,
-.v-fade-transition-enter-to,
-.v-fade-transition-leave-to {
-  transition: none !important;
-}
 </style>
 
-<style lang="sass" scoped>
-$navigation-drawer-transition-property: none !important
+<style scoped>
+::v-deep(.v-navigation-drawer),
+::v-deep(.v-navigation-drawer--animate),
+::v-deep(.v-overlay__scrim) {
+  transition: none !important;
+  transform: none !important;
+}
 </style>

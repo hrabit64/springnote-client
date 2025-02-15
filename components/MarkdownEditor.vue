@@ -277,15 +277,12 @@
           >
             <v-icon>mdi-window-maximize</v-icon>
           </v-btn>
-          <p class="bold-font text-primary text-subtitle-1 mt-5 text-center">
-            <v-icon>mdi-eye</v-icon>
-            Preview
-          </p>
+
 
           <v-card
             elevation="0"
             color="success"
-            class="overflow-y-auto mt-3"
+            class="overflow-y-auto"
             style="height: 70vh"
           >
             <v-card-title></v-card-title>

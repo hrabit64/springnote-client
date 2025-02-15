@@ -1,9 +1,9 @@
 <template>
-  <v-dialog width="100%" height="100%" v-model="isOpen">
+  <v-dialog width="100%" height="100%" v-model="isOpen" class="bg-success">
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn small icon class="mx-1" @click="openSearchDialog">
         <v-icon color="primary">mdi-magnify</v-icon>
-        <v-tooltip activator="parent" location="bottom"> Search </v-tooltip>
+        <v-tooltip activator="parent" location="bottom"> Search</v-tooltip>
       </v-btn>
     </template>
     <template v-slot:default="{ isActive }">
@@ -14,9 +14,10 @@
         @split="closeSearchDialog"
       >
         <template v-slot:title>
-          <v-icon>mdi-magnify</v-icon> 포스트 검색
+          <v-icon>mdi-magnify</v-icon>
+          포스트 검색
         </template>
-        <v-card-title>
+        <v-card-title class="bg-success">
           <v-row class="mb-0 pa-0">
             <v-col cols="12" class="mt-2 mb-0">
               <v-text-field
@@ -43,7 +44,20 @@
               cols="12"
               class="text-center bold-font"
             >
-              <LinearProgress text="검색중" />
+              <v-card
+                class="mx-auto my-2 bg-transparent"
+                color="success"
+                elevation="0"
+                width="100%"
+                v-for="n in 3"
+     
+              >
+                <v-skeleton-loader
+                  type="list-item-avatar"
+                  class="my-2"
+                  width="100%"
+                ></v-skeleton-loader>
+              </v-card>
             </v-col>
             <v-col
               cols="12"
@@ -58,10 +72,12 @@
           </v-row>
         </v-card-title>
 
+
         <v-virtual-scroll
           :items="searchedPost"
           item-height="50"
           :id="searchUid"
+          class="bg-success"
         >
           <template v-slot:default="{ item }">
             <v-list-item class="my-1 mx-2" hover @click="goToPost(item.id)">
@@ -76,8 +92,10 @@
             </v-list-item>
           </template>
         </v-virtual-scroll>
-        <v-pagination :length="totalPage" v-model="selectPage"></v-pagination>
+        <v-pagination class="bg-success" :length="totalPage" v-model="selectPage"></v-pagination>
       </WindowCard>
+
+
     </template>
   </v-dialog>
 </template>
@@ -86,6 +104,7 @@
 import type { PostCardItem } from '~/types/components'
 import { getPostsWithKeyword } from '~/api/post.api'
 import { isPagePostSimpleResponse } from '~/types/response.d'
+import { v4 } from 'uuid'
 
 const isOpen = ref(false)
 
@@ -143,9 +162,9 @@ const loadPost = async (page: number) => {
         created_at: post.created_at,
         series: post.series
           ? {
-              id: post.series.id,
-              name: post.series.name
-            }
+            id: post.series.id,
+            name: post.series.name
+          }
           : null,
         thumbnail: post.thumbnail,
         tags: post.tags.map(tag => {
@@ -165,7 +184,6 @@ let lastSearchKeyword = ''
 let lastSearchMode = ''
 
 const searchUid = ref('')
-import { v4 } from 'uuid'
 
 const searchPost = async () => {
   if (
