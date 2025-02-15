@@ -3,7 +3,7 @@
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn block class="mx-1" @click="openDialog">
         <v-icon>mdi-plus</v-icon>
-        <v-tooltip activator="parent" location="bottom"> Select Series </v-tooltip>
+        <v-tooltip activator="parent" location="bottom"> Select Series</v-tooltip>
       </v-btn>
     </template>
     <template v-slot:default="{ isActive }">
@@ -13,14 +13,17 @@
         @minus="closeDialog"
         @split="closeDialog"
       >
-        <template v-slot:title> <v-icon>mdi-cog</v-icon> 시리즈 선택 </template>
+        <template v-slot:title>
+          <v-icon>mdi-cog</v-icon>
+          시리즈 선택
+        </template>
         <v-row>
           <v-col cols="12">
-            <SeriesSelectList @select="select" :key="key"/>
+            <SeriesSelectList @select="select" :key="key" />
           </v-col>
           <v-col cols="12">
             <SeriesCreateDialog @create="create" />
-          </v-col cols="12">
+          </v-col>
         </v-row>
       </WindowCard>
     </template>
@@ -29,6 +32,9 @@
 
 <script setup lang="ts">
 import type { KeyVal } from '~/types/components'
+import { useAlertStore } from '~/stores/alert'
+import { AlertType } from '~/types/components.d'
+import { v4 } from 'uuid'
 
 const props = defineProps({
   modelValue: {
@@ -64,11 +70,7 @@ const closeDialog = () => {
 }
 
 
-import { useAlertStore } from '~/stores/alert'
-
 const alertStore = useAlertStore()
-
-import { AlertType } from '~/types/components.d'
 
 
 const select = (series: KeyVal) => {
@@ -79,7 +81,7 @@ const select = (series: KeyVal) => {
     message: `Selected series: ${series.value}`
   })
 }
-import { v4 } from 'uuid'
+
 const key = ref(v4())
 
 const create = () => {

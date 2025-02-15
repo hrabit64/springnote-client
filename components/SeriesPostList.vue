@@ -1,142 +1,114 @@
 <template>
-  <!-- 시리즈소개 -->
-  <v-row>
-    <v-col cols="12" md="4">
-      <windowCard
-        w="100%"
-   
-        class="my-2"
-        @close="goToSeriesList"
-        @minus="goToSeriesList"
-        @split="goToSeriesList"
-      >
-        <template v-slot:title>
-          <v-icon>mdi-information</v-icon>
-          Series Info
-        </template>
-        <v-row class="text-center">
-          <v-col cols="12">
-            <v-img
-              :src="targetSeries.thumbnail + '?height=400'"
-              class="align-center"
-              cover
-              max-height="300"
-              rounded
-            >
-              <template v-slot:placeholder>
-                <div class="align-center justify-center fill-height">
-                  <v-card
-                    class="mx-auto my-2"
-                    color="success"
-                    elevation="0"
-                    width="100%"
-                  >
-                    <v-skeleton-loader
-                      type="card"
-                      class="my-2"
-                      width="100%"
-                    ></v-skeleton-loader>
-                  </v-card>
-                </div>
-              </template>
-            </v-img>
-          </v-col>
 
-          <v-col cols="12" class="px-4">
-            <p class="text-primary text-subtilte-1 bold-font mx-4">
-              시리즈 | {{ targetSeries.name }}
-            </p>
-          </v-col>
+  <windowCard
+    w="100%"
 
-          <v-col cols="12" class="px-5">
-            <p class="text-body-2 regular-font mx-4">
-              {{ targetSeries.description }}
-            </p>
-          </v-col>
-          <v-col cols="12">
-            <SeriesUpdateDialog
-              v-if="isAdmin"
-              :series="targetSeries"
-              @update="update"
-            />
-          </v-col>
-        </v-row>
-      </windowCard>
-    </v-col>
-
-    <v-col cols="12" md="8">
-      <WindowCard
-        w="100%"
-        class="my-2"
-        @close="goToSeriesList"
-        @minus="goToSeriesList"
-        @split="goToSeriesList"
-      >
-        <template v-slot:title>
-          <v-icon>mdi-file-document-multiple</v-icon>
-          Post List
-        </template>
-        <v-infinite-scroll
-          :items="postList"
-          :style="scrollCard"
-          :onLoad="load"
-          width="100%"
-          v-if="!isNoContent"
-          height="400"
+    class="my-2"
+    @close="goToSeriesList"
+    @minus="goToSeriesList"
+    @split="goToSeriesList"
+  >
+    <template v-slot:title>
+      <v-icon>mdi-information</v-icon>
+      Series Info
+    </template>
+    <v-row justify="center" align="center">
+      <v-col cols="12" md="4" class="mt-5 text-center">
+        <v-avatar
+          :image="targetSeries.thumbnail + '?height=400&width=400' "
+          size="300"
         >
-          <v-table class="bg-transparent pa-1" width="100%" hover>
-            <thead>
-            <tr></tr>
-            </thead>
-            <tbody>
-            <tr v-for="(post, index) in postList" :key="post.id">
-              <td @click.on="goToPost(post.id)" style="cursor: pointer">
-                <p class="bold-font text-body-2">
-                  <v-icon class="mx-1">mdi-file-document</v-icon>
-                  {{ total - index - 1 }}. {{ post.title }}
-                </p>
-              </td>
-            </tr>
-            </tbody>
-          </v-table>
 
-          <template v-slot:loading>
-            <v-col cols="12" md="12" class="text-center">
-              <v-card
-                class="mx-auto my-2 bg-transparent"
-                color="success"
-                elevation="0"
-                v-show="!isLast"
+        </v-avatar>
+
+      </v-col>
+
+
+      <v-col cols="12" md="8" class="px-4 text-left mt-5">
+        <p class="text-primary text-h4 bold-font mx-4">
+          {{ targetSeries.name }}
+        </p>
+        <p class="text-body-1 bold-font mx-4 mt-5">
+          {{ targetSeries.description }}
+        </p>
+      </v-col>
+
+
+      <v-col cols="12" v-if="isAdmin">
+        <SeriesUpdateDialog
+
+          :series="targetSeries"
+          @update="update"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-divider></v-divider>
+        <p class="text-body-1 text-primary text-center bold-font mx-4 my-4">
+          <v-icon>mdi-file-document-multiple</v-icon>
+          총 {{ total }} 개의 포스트
+        </p>
+        <v-divider></v-divider>
+      </v-col>
+      <v-infinite-scroll
+        :items="postList"
+        :style="scrollCard"
+        :onLoad="load"
+        width="100%"
+        v-if="!isNoContent"
+        height="400"
+      >
+        <v-table class="bg-transparent pa-1" width="100%" hover>
+          <thead>
+          <tr></tr>
+          </thead>
+          <tbody>
+          <tr v-for="(post, index) in postList" :key="post.id">
+            <td @click.on="goToPost(post.id)" style="cursor: pointer">
+              <p class="bold-font text-body-2">
+                <v-icon class="mx-1">mdi-file-document</v-icon>
+                {{ total - index - 1 }}. {{ post.title }}
+              </p>
+            </td>
+          </tr>
+          </tbody>
+        </v-table>
+
+        <template v-slot:loading>
+          <v-col cols="12" md="12" class="text-center">
+            <v-card
+              class="mx-auto my-2 bg-transparent"
+              color="success"
+              elevation="0"
+              v-show="!isLast"
+              width="100%"
+              v-for="n in 3"
+            >
+              <v-skeleton-loader
+                type="list-item-avatar"
+                class="my-2"
                 width="100%"
-                v-for="n in 3"
-              >
-                <v-skeleton-loader
-                  type="list-item-avatar"
-                  class="my-2"
-                  width="100%"
-                ></v-skeleton-loader>
-              </v-card>
-            </v-col>
-          </template>
-          <template v-slot:empty></template>
-        </v-infinite-scroll>
-        <v-col cols="12" v-if="isNoContent">
-          <v-card class="mx-auto" elevation="0">
-            <v-card-text class="text-center bold-font text-subtitle-1"
-            >
-              <v-icon class="mr-2">mdi-alert-circle</v-icon>
-              해당 시리즈에
-              포스트가 없습니다.
-            </v-card-text
-            >
-          </v-card>
-          <v-divider class="my-2"></v-divider>
-        </v-col>
-      </WindowCard>
-    </v-col>
-  </v-row>
+              ></v-skeleton-loader>
+            </v-card>
+          </v-col>
+        </template>
+        <template v-slot:empty></template>
+      </v-infinite-scroll>
+      <v-col cols="12" v-if="isNoContent">
+        <v-card class="mx-auto" elevation="0" color="success">
+          <v-card-text class="text-center bold-font text-subtitle-1"
+          >
+            <v-icon class="mr-2">mdi-alert-circle</v-icon>
+            해당 시리즈에
+            포스트가 없습니다.
+          </v-card-text
+          >
+        </v-card>
+        <v-divider class="my-2"></v-divider>
+      </v-col>
+    </v-row>
 
-  <v-card color="transparent" elevation="0" width="100%"></v-card>
+  </windowCard>
+
 </template>
 <script setup lang="ts">
 import type { SeriesResponse } from '~/types/series-response'

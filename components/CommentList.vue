@@ -1,13 +1,15 @@
 <template>
-  <v-row>
+  <v-row class="d-flex" style="height: 100%;">
     <v-col cols="12">
       <v-infinite-scroll
         :items="comments"
         :onLoad="load"
         :key="id"
         width="100%"
-        :style="commentList"
         v-if="!isNoContent"
+        height="70vh"
+
+
       >
         <v-item-group>
           <v-row class="mx-0">
@@ -16,6 +18,7 @@
               :key="comment.id"
               cols="12"
               class="my-0 py-1"
+        
             >
               <CommentCard :comment="comment" />
             </v-col>
@@ -52,7 +55,7 @@
       </v-infinite-scroll>
     </v-col>
     <v-col cols="12" v-if="isNoContent">
-      <v-card class="mx-auto" elevation="0">
+      <v-card class="mx-auto" elevation="0" color="success">
         <v-card-text class="text-center bold-font text-subtitle-1"
         >
           <v-icon class="mr-2">mdi-alert-circle</v-icon>
@@ -63,11 +66,13 @@
       </v-card>
       <v-divider class="my-2"></v-divider>
     </v-col>
-    <v-col cols="12" v-if="name !== ''">
-      <CommentCreateForm :post_id="props.post_id" @create="refresh" />
-    </v-col>
-    <v-col cols="12" v-if="name === ''">
-      <LoginCard />
+    <v-col cols="12">
+      <template v-if="name !== ''">
+        <CommentCreateForm :post_id="props.post_id" @create="refresh" />
+      </template>
+      <template v-else>
+        <LoginCard />
+      </template>
     </v-col>
   </v-row>
 </template>
@@ -135,7 +140,7 @@ const { mobile } = useDisplay()
 
 const calListHeight = () => {
   if (mobile.value) {
-    return name.value === '' ? '55vh' : '60vh'
+    return name.value === '' ? '70vh' : '70vh'
   }
   return name.value === '' ? '70vh' : '70vh'
 }

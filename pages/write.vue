@@ -70,7 +70,8 @@
       <v-row justify="center" align="center" class="mx-5">
         <v-col cols="12" class="text-center">
           <h3 class="text-h5 bold-font">
-            <v-icon class="mr-2">mdi-square-edit-outline</v-icon>게시글 작성
+            <v-icon class="mr-2">mdi-square-edit-outline</v-icon>
+            게시글 작성
           </h3>
         </v-col>
 
@@ -148,17 +149,24 @@
               @click="thumbnail = ''"
               color="error"
               class="mt-2"
-              ><v-icon>mdi-restore</v-icon></v-btn
+            >
+              <v-icon>mdi-restore</v-icon>
+            </v-btn
             >
           </v-col>
         </v-col>
 
         <v-col cols="12">
+          <v-btn icon>
+            <v-icon @click="fullScreen = true">mdi-fullscreen</v-icon>
+          </v-btn>
           <MarkdownEditor v-model="content" />
         </v-col>
         <v-col cols="12">
-          <v-icon>mdi-timer-outline</v-icon>: {{ lastSaved }}
-          <v-icon>mdi-identifier</v-icon>:
+          <v-icon>mdi-timer-outline</v-icon>
+          : {{ lastSaved }}
+          <v-icon>mdi-identifier</v-icon>
+          :
           {{ tmpPostId }}
           <v-progress-circular
             v-if="isSaving"
@@ -168,7 +176,10 @@
         </v-col>
         <v-col cols="6">
           <v-btn color="error" block @click="openRemoveCheckDialog"
-            ><v-icon>mdi-remove</v-icon>임시저장글 삭제</v-btn
+          >
+            <v-icon>mdi-remove</v-icon>
+            임시저장글 삭제
+          </v-btn
           >
           <!-- check dialog -->
           <v-dialog
@@ -185,7 +196,8 @@
               @split="closeRemoveCheckDialog"
             >
               <template v-slot:title>
-                <v-icon>mdi-alert</v-icon> 삭제 확인
+                <v-icon>mdi-alert</v-icon>
+                삭제 확인
               </template>
               <v-row class="mb-0 pa-0 ma-4" justify="center" align="center">
                 <v-col cols="12" class="mt-2 mb-0">
@@ -199,12 +211,14 @@
                     color="error"
                     @click="removeTmpPost"
                     block
-                    >삭제</v-btn
+                  >삭제
+                  </v-btn
                   >
                 </v-col>
                 <v-col cols="6" class="text-center">
                   <v-btn class="bold-font" @click="closeRemoveCheckDialog" block
-                    >취소</v-btn
+                  >취소
+                  </v-btn
                   >
                 </v-col>
               </v-row>
@@ -213,7 +227,10 @@
         </v-col>
         <v-col cols="6">
           <v-btn block @click.stop="openPublishDialog"
-            ><v-icon>mdi-plus</v-icon>포스트 등록</v-btn
+          >
+            <v-icon>mdi-plus</v-icon>
+            포스트 등록
+          </v-btn
           >
           <v-dialog
             v-model="isPublishDialog"
@@ -228,7 +245,8 @@
               @split="closePublishDialog"
             >
               <template v-slot:title>
-                <v-icon>mdi-alert</v-icon> 등록 확인
+                <v-icon>mdi-alert</v-icon>
+                등록 확인
               </template>
               <v-row class="mb-0 pa-0 ma-4" justify="center" align="center">
                 <v-col cols="12" class="mt-2 mb-0">
@@ -242,7 +260,8 @@
                     color="primary"
                     @click="publishPost"
                     block
-                    >등록</v-btn
+                  >등록
+                  </v-btn
                   >
                 </v-col>
                 <v-col cols="6" class="text-center">
@@ -251,7 +270,8 @@
                     color="error"
                     @click="closePublishDialog"
                     block
-                    >취소</v-btn
+                  >취소
+                  </v-btn
                   >
                 </v-col>
               </v-row>
@@ -259,6 +279,42 @@
           </v-dialog>
         </v-col>
       </v-row>
+      <v-dialog
+        v-model="fullScreen"
+        fullscreen
+        scrim="success"
+        persistent
+        no-click-animation
+        class="no-transition"
+        transition="false"
+        :open-delay="0"
+        style="overflow-y: hidden"
+        overlay-color="black"
+      >
+        <v-card color="success" style="overflow-y: hidden">
+          <v-row align="center" justify="center">
+            <v-col cols="12">
+              <MarkdownEditor v-model="content" />
+
+            </v-col>
+            <v-col cols="12">
+              <v-icon>mdi-timer-outline</v-icon>
+              : {{ lastSaved }}
+              <v-icon>mdi-identifier</v-icon>
+              :
+              {{ tmpPostId }}
+              <v-progress-circular
+                v-if="isSaving"
+                indeterminate
+                :size="16"
+              ></v-progress-circular>
+              <v-btn icon>
+                <v-icon @click="fullScreen = false">mdi-fullscreen-exit</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-dialog>
     </v-container>
   </client-only>
 </template>
@@ -272,20 +328,24 @@ definePageMeta({
 const permissionCheck = ref(true)
 
 import { useUserStore } from '~/stores/user'
+import { useAlertStore } from '~/stores/alert'
+import { AlertType } from '~/types/components.d'
+
+// markdown editor
+// remove
+import { createTmpPost, deleteTmpPost, getRecentTmpPosts, publishTmpPost, updateTmpPost } from '~/api/tmp-post.api'
+import type { TmpPostRequest } from '~/types/tmp-post-request'
+import { isPagedTmpPostResponse, isTmpPostResponse } from '~/types/tmp-post-response.d'
+
+import { isPostResponse } from '~/types/post-response.d'
 
 const userStore = useUserStore()
 const { isAdmin } = storeToRefs(userStore)
 
 const router = useRouter()
 
-import { useAlertStore } from '~/stores/alert'
-
 const alertStore = useAlertStore()
 
-import { AlertType } from '~/types/components.d'
-
-// markdown editor
-import type { KeyVal } from '~/types/components'
 const content = ref('본문을 입력해주세요')
 
 const title = ref('')
@@ -332,10 +392,6 @@ const rules = {
   min: (v: string) => v.length >= 3 || '최소 3자 이상 입력해주세요.',
   max: (v: string) => v.length <= 300 || '최대 300자 이하로 입력해주세요.'
 }
-
-import { createTmpPost, updateTmpPost } from '~/api/tmp-post.api'
-import type { TmpPostRequest } from '~/types/tmp-post-request'
-import { isTmpPostResponse } from '~/types/tmp-post-response.d'
 
 // tmp post system
 const checkSavedPost = ref(true)
@@ -404,8 +460,6 @@ const handleSave = event => {
     saveTmpPost()
   }
 }
-import { getRecentTmpPosts } from '~/api/tmp-post.api'
-import { isPagedTmpPostResponse } from '~/types/tmp-post-response.d'
 
 let autoSaveInterval
 
@@ -458,9 +512,6 @@ onBeforeUnmount(() => {
   clearInterval(autoSaveInterval)
 })
 
-// remove
-import { deleteTmpPost } from '~/api/tmp-post.api'
-
 const removeCheckDialog = ref(false)
 const openRemoveCheckDialog = () => {
   removeCheckDialog.value = true
@@ -503,9 +554,6 @@ const openPublishDialog = () => {
 const closePublishDialog = () => {
   isPublishDialog.value = false
 }
-import { publishTmpPost } from '~/api/tmp-post.api'
-
-import { isPostResponse } from '~/types/post-response.d'
 
 const publishPost = async () => {
   if (isSaving.value) {
@@ -588,6 +636,9 @@ const publishPost = async () => {
     isSaving.value = false
   })
 }
+
+
+const fullScreen = ref(false)
 </script>
 
 <style></style>

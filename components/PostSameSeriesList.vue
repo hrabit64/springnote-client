@@ -5,11 +5,11 @@
     w="100%"
     class="my-2"
     :style="mainCard"
+
   >
     <template v-slot:title>
-
       <span class="overflow-x-hidden" @click.stop="goToSeries(series.id)" style="cursor: pointer">
-        <v-icon class="ml-2">mdi-file-document-multiple</v-icon>
+        <v-icon>mdi-file-document-multiple</v-icon>
         {{ series.name }}
       </span>
     </template>
@@ -20,9 +20,10 @@
         :onLoad="load"
         height="200"
         width="100%"
+        class="bg-success"
         v-if="!isNoContent"
       >
-        <v-table class="bg-transparent pa-1" width="100%" hover>
+        <v-table class="bg-success" width="100%" hover>
           <thead>
           <tr></tr>
           </thead>
@@ -33,10 +34,18 @@
               :class="targetPostId === post.id ? 'bg-primary' : ''"
               style="cursor: pointer"
             >
-              <p class="bold-font text-body-2">
-                <v-icon class="mx-1">mdi-file-document</v-icon>
-                {{ total - index - 1 }}. {{ post.title }}
-              </p>
+
+              <v-row>
+                <v-col cols="1" class="text-right text-body-2">
+                  <v-icon class="mr-2">mdi-file-document-outline</v-icon>
+                </v-col
+                >
+                <v-col cols="11">
+                  <p class="text-body-2 bold-font">
+                    {{ total - index - 1 }}. {{ post.title }}
+                  </p>
+                </v-col>
+              </v-row>
             </td>
           </tr>
           </tbody>
@@ -149,31 +158,17 @@ const goToSeriesList = () => {
 
 const { mobile } = useDisplay()
 
-let isClose = false
-let isMaximum = false
 
 const calHeight = () => {
-  if (isClose) {
-    return '0vh'
-  }
 
-  if (isMaximum) {
-    return mobile.value ? '60vh' : '50vh'
-  }
 
-  return mobile.value ? '30vh' : '25vh'
+  return mobile.value ? '30vh' : '35vh'
 }
 
 const calMainHeight = () => {
-  if (isClose) {
-    return '0vh'
-  }
 
-  if (isMaximum) {
-    return mobile.value ? '70vh' : '60vh'
-  }
 
-  return mobile.value ? '40vh' : '30vh'
+  return mobile.value ? '40vh' : '40vh'
 }
 
 const scrollCard = reactive({
@@ -189,23 +184,6 @@ watch(mobile, () => {
   mainCard.height = calMainHeight()
 })
 
-const close = () => {
-  isClose = true
-  isMaximum = false
-  scrollCard.height = calHeight()
-}
-
-const minus = () => {
-  isClose = false
-  isMaximum = false
-  scrollCard.height = calHeight()
-}
-
-const maximum = () => {
-  isClose = false
-  isMaximum = true
-  scrollCard.height = calHeight()
-}
 
 const userStore = useUserStore()
 const { isAdmin } = storeToRefs(userStore)
@@ -221,4 +199,6 @@ const update = (newSeries: SeriesResponse) => {
 ::-webkit-scrollbar {
   width: 0px;
 }
+
+
 </style>

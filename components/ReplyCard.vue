@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto " color="success" elevation="0">
+  <v-card class="py-2 comment-card" color="success" elevation="0">
     <!--    작성자 및 수정,삭제-->
     <v-card-title v-if="!isLoading" class="mb-2">
       <v-col cols="12" class="ma-0 pa-0">
@@ -34,7 +34,7 @@
 
 
       <p
-        class="text-subtitle-2 bold-font
+        class="text-caption bold-font
          text-grey-darken-1 my-2"
       >
         {{ comment.created_date.replace('T', ' ').replace('Z', '') }}
@@ -227,4 +227,10 @@ const rm = async () => {
   white-space: normal; /* 기본 값으로 자동 줄바꿈을 설정 */
   word-wrap: break-word;
 }
+
+.comment-card {
+
+  border: 2px solid #1E1E1E !important;
+}
+
 </style>

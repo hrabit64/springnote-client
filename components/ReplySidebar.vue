@@ -12,8 +12,12 @@
       w="100%"
       v-if="replyOpen"
       @close="commentSidebarStore.replyToggle(-1)"
+      class="bg-success"
     >
-      <template v-slot:title> <v-icon>mdi-reply</v-icon> Reply </template>
+      <template v-slot:title>
+        <v-icon>mdi-reply</v-icon>
+        Reply
+      </template>
       <v-row>
         <v-col cols="12">
           <ReplyList />
@@ -25,6 +29,7 @@
 
 <script lang="ts" setup>
 import { useCommentSidebarStore } from '~/stores/comment-sidebar'
+
 const commentSidebarStore = useCommentSidebarStore()
 const { replyOpen, replyTargetId } = storeToRefs(commentSidebarStore)
 

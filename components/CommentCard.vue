@@ -1,5 +1,6 @@
 <template>
-  <v-card class="mx-auto" color="success" elevation="0">
+  <v-card class="py-2" :color="!no_reply? 'success' : ''" elevation="0" :rounded="!no_reply ? true : false"
+          :style="!no_reply ? 'border: 2px solid #1E1E1E !important;' : 'background-color: #1A1A1A;'">
 
 
     <!--    작성자 및 수정,삭제-->
@@ -34,7 +35,7 @@
       </v-col>
 
       <p
-        class="text-subtitle-2 bold-font
+        class="text-caption bold-font
          text-grey-darken-1 my-2"
       >
         {{ comment.created_date.replace('T', ' ').replace('Z', '') }}
@@ -46,7 +47,7 @@
 
     <!--    본문-->
     <v-card-text v-if="!isLoading && comment.enabled">
-      <p class="bold-font text-caption text-md-body-2">
+      <p class="bold-font text-body-2 text-md-body-2">
         {{ comment.content }}
       </p>
     </v-card-text>
@@ -242,4 +243,10 @@ const openReply = () => {
   white-space: normal; /* 기본 값으로 자동 줄바꿈을 설정 */
   word-wrap: break-word;
 }
+
+.comment-card {
+
+  border: 2px solid #1E1E1E !important;
+}
+
 </style>
