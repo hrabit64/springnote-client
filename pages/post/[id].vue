@@ -94,7 +94,7 @@
         </WindowCard>
       </v-col>
 
-    
+
     </v-row>
   </v-container>
 </template>
@@ -109,7 +109,7 @@ import { isPostDetailResponse } from '~/types/post-response.d'
 import type { PostDetailResponse } from '~/types/post-response'
 
 import { getPost } from '~/api/post.api'
-import debug from 'debug'
+
 import { useCommentSidebarStore } from '~/stores/comment-sidebar'
 import { useDisplay } from 'vuetify'
 
@@ -118,7 +118,7 @@ const { name } = storeToRefs(userStore)
 const { isAdmin } = storeToRefs(userStore)
 
 const commentSidebarStore = useCommentSidebarStore()
-debug.default = debug
+
 
 const route = useRoute()
 const postId = route.params.id

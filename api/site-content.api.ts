@@ -11,7 +11,6 @@ export const getSiteContent = async (
     lazy: false
   })
   if (error.value) {
-    console.log(error.value)
     return null
   } else {
     return data.value

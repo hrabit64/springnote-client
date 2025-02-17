@@ -1,12 +1,8 @@
 import { createPayload, createUrl, handleApiError } from '~/utils/api.utils'
 
-import type { UserResponse, ErrorResponse } from '~/types/response'
+import type { ErrorResponse } from '~/types/response'
 
-import type {
-  PagePostSimpleResponse,
-  PostDetailResponse,
-  PostResponse
-} from '~/types/post-response'
+import type { PagePostSimpleResponse, PostDetailResponse } from '~/types/post-response'
 import type { PostUpdateRequest } from '~/types/post-request'
 
 export const getPosts = async (
@@ -24,7 +20,7 @@ export const getPosts = async (
   )
 
   if (error.value) {
-    console.log(error.value)
+
     return null
   } else {
     return data.value!!
@@ -48,7 +44,6 @@ export const getSeriesPosts = async (
   )
 
   if (error.value) {
-    console.log(error.value)
     return null
   } else {
     return data.value
@@ -66,7 +61,7 @@ export const getRecentPosts = async (
   )
 
   if (error.value) {
-    console.log(error.value)
+
     return null
   } else {
     return data.value

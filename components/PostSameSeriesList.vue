@@ -117,7 +117,7 @@ const fetchSeries = async () => {
     'createdDate',
     'desc'
   )
-  // console.log(debugPagePostSimpleResponse(result).error)
+
   if (isPagePostSimpleResponse(result)) {
     postList.value.push(...result._embedded.posts)
 
