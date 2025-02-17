@@ -1,9 +1,5 @@
 import z from 'zod'
-// {
-//     "description": "test",
-//     "name": "test",
-//     "thumbnail": "https://springnote.blog"
-//   }
+
 
 export const SeriesRequestSchema = z.object({
   name: z.string(),

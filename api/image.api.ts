@@ -1,6 +1,6 @@
 import type { ImageRequest } from '~/types/image-request'
 import type { ImageResponse } from '~/types/image-response'
-import { createPayload, createImgUrl, handleApiError } from '~/utils/api.utils'
+import { createImgUrl } from '~/utils/api.utils'
 
 export const postImage = async (
   req: ImageRequest
@@ -17,7 +17,7 @@ export const postImage = async (
   })
 
   if (error.value) {
-    console.log(error.value)
+
     return null
   } else {
     return data.value!!
