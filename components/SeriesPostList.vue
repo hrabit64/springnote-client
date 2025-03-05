@@ -17,6 +17,7 @@
         <v-avatar
           :image="targetSeries.thumbnail + '?height=400&width=400' "
           size="300"
+          rounded="xl"
         >
 
         </v-avatar>

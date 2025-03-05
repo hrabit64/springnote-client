@@ -21,7 +21,7 @@
               <v-col cols="12" md="4" class="text-center">
                 <v-avatar
                   :image="post.thumbnail + '?height=500&width=500' "
-                  rounded="1"
+                  rounded="xl"
                   :size="mobile? 300 : 400"
                 >
 
@@ -90,7 +90,6 @@
               </client-only>
             </v-row>
           </v-card-text>
-
         </WindowCard>
       </v-col>
 
