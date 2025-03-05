@@ -36,21 +36,21 @@ const defaultRender = md.renderer.rules.image || function(tokens, idx, options, 
 }
 
 
-md.renderer.rules.image = function(tokens, idx, options, env, self) {
-  const token = tokens[idx]
-  const srcIndex = token.attrIndex('src')
-  const src = token.attrs?.[srcIndex]?.[1]
-
-  const widthIndex = token.attrIndex('width')
-  const heightIndex = token.attrIndex('height')
-
-  if (widthIndex < 0) token.attrPush(['width', '720'])
-  if (heightIndex < 0) token.attrPush(['height', 'auto'])
-
-  token.attrPush(['rel', 'preload'])
-
-  return defaultRender(tokens, idx, options, env, self)
-}
+// md.renderer.rules.image = function(tokens, idx, options, env, self) {
+//   const token = tokens[idx]
+//   const srcIndex = token.attrIndex('src')
+//   const src = token.attrs?.[srcIndex]?.[1]
+//
+//   const widthIndex = token.attrIndex('width')
+//   const heightIndex = token.attrIndex('height')
+//
+//   if (widthIndex < 0) token.attrPush(['width', '720'])
+//   if (heightIndex < 0) token.attrPush(['height', 'auto'])
+//
+//   token.attrPush(['rel', 'preload'])
+//
+//   return defaultRender(tokens, idx, options, env, self)
+// }
 
 
 </script>

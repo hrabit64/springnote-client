@@ -50,7 +50,7 @@
           <v-card-text @click.stop="goTo(`/post/${post.id}`)">
             <v-row justify="center" align="center" class="py-2">
               <v-col cols="4">
-                <v-avatar :size="mobile ? 100:200" class="text-right text-right">
+                <v-avatar :size="mobile ? 100:200" class="text-right text-right" rounded="xl">
                   <v-img :src="post.thumbnail" alt="avatar"></v-img>
                 </v-avatar>
               </v-col>

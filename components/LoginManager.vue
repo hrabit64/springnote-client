@@ -74,7 +74,7 @@
 
               <v-checkbox class="text-center d-inline-flex" v-model="isAgree">
                 <template v-slot:label>
-                  <p>본인은 <span class="text-primary" @click.stop="openPolicy">개인정보 처리방침</span> 및 <span
+                  <p>본인은 만 14세 이상이며 <span class="text-primary" @click.stop="openPolicy">개인정보 처리방침</span> 및 <span
                     class="text-primary" @click.stop="openTerms">이용약관</span>을 확인하였으며, 이에 동의합니다.</p>
                 </template>
 
